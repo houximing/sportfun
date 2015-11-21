@@ -1,3 +1,8 @@
+sport_fun:
+    resource: "@SportFunBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
