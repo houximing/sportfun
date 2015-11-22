@@ -1,0 +1,21 @@
+{
+  "name": "bootstrap",
+  "homepage": "https://github.com/houximing/sportfun",
+  "authors": [
+    "Jimmy Hou <ximing.developer@gmail.com>"
+  ],
+  "description": "frontend",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.5"
+  }
+}
