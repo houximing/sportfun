@@ -17,12 +17,20 @@ class StadiumType extends AbstractType
         $builder
             ->add('name')
             ->add('code')
+            ->add('type')
+            ->add('abn')
+            ->add('contactPerson')
+            ->add('contactNumber')
+            ->add('contactEmail')
+            ->add('logo')
+            ->add('code')
             ->add('address')
             ->add('suburb')
             ->add('state')
             ->add('postcode')
             ->add('latitude')
             ->add('longitude')
+            ->add('chain')
             ->add('status')
         ;
     }

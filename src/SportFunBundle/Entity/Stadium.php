@@ -12,6 +12,22 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Stadium
 {
+
+    const TYPE_INDOOR = 0;
+    const TYPE_OUTDOOR = 1;
+    const TYPE_RECREATION = 2;
+    const TYPE_AQUA = 3;
+    const TYPE_FITNESS = 4;
+    const TYPE_SIGHT = 5;
+    const TYPE_CINIMA = 6;
+
+    const STATUS_ACTIVE = 1;
+    const STATUS_INACTIVE = 0;
+
+    const CHAIN_YES = 1;
+    const CHAIN_NO = 0;
+
+
     /**
      * @var integer
      *
@@ -34,6 +50,55 @@ class Stadium
      * @ORM\Column(name="code", type="string", length=20)
      */
     private $code;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="type", type="smallint")
+     */
+    private $type;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="abn", type="string", length=100)
+     */
+    private $abn;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="contact_person", type="string", length=100)
+     */
+    private $contactPerson;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="contact_number", type="string", length=100)
+     */
+    private $contactNumber;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="contact_email", type="string", length=100)
+     */
+    private $contactEmail;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="logo", type="string", length=100)
+     */
+    private $logo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="chain", type="smallint")
+     */
+    private $chain;
 
     /**
      * @var string
@@ -263,6 +328,14 @@ class Stadium
         return $this->status;
     }
 
+    public function getStatusText(){
+        $statusMap = [
+            self::STATUS_ACTIVE => "Active",
+            self::STATUS_INACTIVE => "Inactive",
+        ];
+        return $statusMap[$this->getStatus()];
+    }
+
     /**
      * @return string
      */
@@ -295,5 +368,198 @@ class Stadium
         $this->longitude = $longitude;
     }
 
+
+    /**
+     * Set type
+     *
+     * @param integer $type
+     *
+     * @return Stadium
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return integer
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+
+    public function getTypeText(){
+
+        $typeMap = [
+            self::TYPE_AQUA => "Aquatics",
+            self::TYPE_CINIMA => "Cinima",
+            self::TYPE_FITNESS => "Fitness",
+            self::TYPE_INDOOR => "Indoor Sports",
+            self::TYPE_OUTDOOR => "Outdoor Sports",
+            self::TYPE_RECREATION => "Recreation/Leisure",
+            self::TYPE_SIGHT => "Sightseeing",
+        ];
+
+        return $typeMap[$this->getType()];
+    }
+
+
+    /**
+     * Set abn
+     *
+     * @param string $abn
+     *
+     * @return Stadium
+     */
+    public function setAbn($abn)
+    {
+        $this->abn = $abn;
+
+        return $this;
+    }
+
+    /**
+     * Get abn
+     *
+     * @return string
+     */
+    public function getAbn()
+    {
+        return $this->abn;
+    }
+
+    /**
+     * Set contactPerson
+     *
+     * @param string $contactPerson
+     *
+     * @return Stadium
+     */
+    public function setContactPerson($contactPerson)
+    {
+        $this->contactPerson = $contactPerson;
+
+        return $this;
+    }
+
+    /**
+     * Get contactPerson
+     *
+     * @return string
+     */
+    public function getContactPerson()
+    {
+        return $this->contactPerson;
+    }
+
+    /**
+     * Set contactNumber
+     *
+     * @param string $contactNumber
+     *
+     * @return Stadium
+     */
+    public function setContactNumber($contactNumber)
+    {
+        $this->contactNumber = $contactNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get contactNumber
+     *
+     * @return string
+     */
+    public function getContactNumber()
+    {
+        return $this->contactNumber;
+    }
+
+    /**
+     * Set contactEmail
+     *
+     * @param string $contactEmail
+     *
+     * @return Stadium
+     */
+    public function setContactEmail($contactEmail)
+    {
+        $this->contactEmail = $contactEmail;
+
+        return $this;
+    }
+
+    /**
+     * Get contactEmail
+     *
+     * @return string
+     */
+    public function getContactEmail()
+    {
+        return $this->contactEmail;
+    }
+
+    /**
+     * Set logo
+     *
+     * @param string $logo
+     *
+     * @return Stadium
+     */
+    public function setLogo($logo)
+    {
+        $this->logo = $logo;
+
+        return $this;
+    }
+
+    /**
+     * Get logo
+     *
+     * @return string
+     */
+    public function getLogo()
+    {
+        return $this->logo;
+    }
+
+    /**
+     * Set chain
+     *
+     * @param integer $chain
+     *
+     * @return Stadium
+     */
+    public function setChain($chain)
+    {
+        $this->chain = $chain;
+
+        return $this;
+    }
+
+    /**
+     * Get chain
+     *
+     * @return integer
+     */
+    public function getChain()
+    {
+        return $this->chain;
+    }
+
+    public function getChainIcon(){
+        $iconMap = [
+            self::CHAIN_NO => "glyphicon-remove",
+            self::CHAIN_YES => "glyphicon-ok"
+        ];
+        return $iconMap[$this->getChain()];
+    }
 }
 
