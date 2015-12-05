@@ -117,7 +117,6 @@ class Stadium
     /**
      * @var State
      *
-     * @ORM\Column(name="state", type="integer", length=5)
      * @ORM\ManyToOne(targetEntity="State", inversedBy="stadiums")
      * @ORM\JoinColumn(name="state", referencedColumnName="id")
      */
