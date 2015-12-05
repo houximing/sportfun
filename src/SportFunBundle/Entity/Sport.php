@@ -125,4 +125,3 @@ class Sport
         return $this->status;
     }
 }
-

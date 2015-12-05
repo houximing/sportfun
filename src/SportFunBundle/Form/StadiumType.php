@@ -2,9 +2,13 @@
 
 namespace SportFunBundle\Form;
 
+use Doctrine\ORM\EntityRepository;
+use SportFunBundle\Entity\StateRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints\Choice;
 
 class StadiumType extends AbstractType
 {
@@ -18,7 +22,9 @@ class StadiumType extends AbstractType
             ->add('name')
             ->add('code')
             ->add('type')
-            ->add('abn')
+            ->add('abn','text',[
+                'label' => "ABN"
+            ])
             ->add('contactPerson')
             ->add('contactNumber')
             ->add('contactEmail')
@@ -26,12 +32,28 @@ class StadiumType extends AbstractType
             ->add('code')
             ->add('address')
             ->add('suburb')
-            ->add('state')
+            ->add('state','entity',[
+                'class' => 'SportFunBundle:State',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('s')
+                        ->orderBy('s.name', 'ASC');
+                }
+            ])
             ->add('postcode')
             ->add('latitude')
             ->add('longitude')
-            ->add('chain')
-            ->add('status')
+            ->add('chain','choice',[
+                "choices" => [
+                    "Yes" => 1,
+                    "No" => 0
+                ],'choices_as_values' => true,
+            ] )
+            ->add('status','choice',[
+                "choices" => [
+                    "Active" => 1,
+                    "Inactive" => 0
+                ],'choices_as_values' => true,
+            ] )
         ;
     }
     

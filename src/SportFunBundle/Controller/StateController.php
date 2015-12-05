@@ -7,21 +7,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use SportFunBundle\Entity\Stadium;
-use SportFunBundle\Form\StadiumType;
+use SportFunBundle\Entity\State;
+use SportFunBundle\Form\StateType;
 
 /**
- * Stadium controller.
+ * State controller.
  *
- * @Route("/stadium")
+ * @Route("/state")
  */
-class StadiumController extends Controller
+class StateController extends Controller
 {
 
     /**
-     * Lists all Stadium entities.
+     * Lists all State entities.
      *
-     * @Route("/", name="stadium")
+     * @Route("/", name="state")
      * @Method("GET")
      * @Template()
      */
@@ -29,22 +29,22 @@ class StadiumController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('SportFunBundle:Stadium')->findAll();
+        $entities = $em->getRepository('SportFunBundle:State')->findAll();
 
         return array(
             'entities' => $entities,
         );
     }
     /**
-     * Creates a new Stadium entity.
+     * Creates a new State entity.
      *
-     * @Route("/", name="stadium_create")
+     * @Route("/", name="state_create")
      * @Method("POST")
-     * @Template("SportFunBundle:Stadium:new.html.twig")
+     * @Template("SportFunBundle:State:new.html.twig")
      */
     public function createAction(Request $request)
     {
-        $entity = new Stadium();
+        $entity = new State();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
@@ -53,7 +53,7 @@ class StadiumController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('stadium_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('state_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -63,16 +63,16 @@ class StadiumController extends Controller
     }
 
     /**
-     * Creates a form to create a Stadium entity.
+     * Creates a form to create a State entity.
      *
-     * @param Stadium $entity The entity
+     * @param State $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Stadium $entity)
+    private function createCreateForm(State $entity)
     {
-        $form = $this->createForm(new StadiumType(), $entity, array(
-            'action' => $this->generateUrl('stadium_create'),
+        $form = $this->createForm(new StateType(), $entity, array(
+            'action' => $this->generateUrl('state_create'),
             'method' => 'POST',
         ));
 
@@ -82,15 +82,15 @@ class StadiumController extends Controller
     }
 
     /**
-     * Displays a form to create a new Stadium entity.
+     * Displays a form to create a new State entity.
      *
-     * @Route("/new", name="stadium_new")
+     * @Route("/new", name="state_new")
      * @Method("GET")
      * @Template()
      */
     public function newAction()
     {
-        $entity = new Stadium();
+        $entity = new State();
         $form   = $this->createCreateForm($entity);
 
         return array(
@@ -100,9 +100,9 @@ class StadiumController extends Controller
     }
 
     /**
-     * Finds and displays a Stadium entity.
+     * Finds and displays a State entity.
      *
-     * @Route("/{id}", name="stadium_show")
+     * @Route("/{id}", name="state_show")
      * @Method("GET")
      * @Template()
      */
@@ -110,10 +110,10 @@ class StadiumController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('SportFunBundle:Stadium')->find($id);
+        $entity = $em->getRepository('SportFunBundle:State')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Stadium entity.');
+            throw $this->createNotFoundException('Unable to find State entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -125,9 +125,9 @@ class StadiumController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing Stadium entity.
+     * Displays a form to edit an existing State entity.
      *
-     * @Route("/{id}/edit", name="stadium_edit")
+     * @Route("/{id}/edit", name="state_edit")
      * @Method("GET")
      * @Template()
      */
@@ -135,10 +135,10 @@ class StadiumController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('SportFunBundle:Stadium')->find($id);
+        $entity = $em->getRepository('SportFunBundle:State')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Stadium entity.');
+            throw $this->createNotFoundException('Unable to find State entity.');
         }
 
         $editForm = $this->createEditForm($entity);
@@ -152,49 +152,48 @@ class StadiumController extends Controller
     }
 
     /**
-    * Creates a form to edit a Stadium entity.
+    * Creates a form to edit a State entity.
     *
-    * @param Stadium $entity The entity
+    * @param State $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Stadium $entity)
+    private function createEditForm(State $entity)
     {
-        $form = $this->createForm(new StadiumType(), $entity, array(
-            'action' => $this->generateUrl('stadium_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new StateType(), $entity, array(
+            'action' => $this->generateUrl('state_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update','attr'=>[
-            "class" => "btn btn-success"
-        ]));
+        $form->add('submit', 'submit', array('label' => 'Update'));
 
         return $form;
     }
     /**
-     * Edits an existing Stadium entity.
+     * Edits an existing State entity.
      *
-     * @Route("/{id}", name="stadium_update")
+     * @Route("/{id}", name="state_update")
      * @Method("PUT")
-     * @Template("SportFunBundle:Stadium:edit.html.twig")
+     * @Template("SportFunBundle:State:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('SportFunBundle:Stadium')->find($id);
+        $entity = $em->getRepository('SportFunBundle:State')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Stadium entity.');
+            throw $this->createNotFoundException('Unable to find State entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
+
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('stadium_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('state_edit', array('id' => $id)));
         }
 
         return array(
@@ -204,9 +203,9 @@ class StadiumController extends Controller
         );
     }
     /**
-     * Deletes a Stadium entity.
+     * Deletes a State entity.
      *
-     * @Route("/{id}", name="stadium_delete")
+     * @Route("/{id}", name="state_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -216,21 +215,21 @@ class StadiumController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('SportFunBundle:Stadium')->find($id);
+            $entity = $em->getRepository('SportFunBundle:State')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Stadium entity.');
+                throw $this->createNotFoundException('Unable to find State entity.');
             }
 
             $em->remove($entity);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('stadium'));
+        return $this->redirect($this->generateUrl('state'));
     }
 
     /**
-     * Creates a form to delete a Stadium entity by id.
+     * Creates a form to delete a State entity by id.
      *
      * @param mixed $id The entity id
      *
@@ -239,9 +238,9 @@ class StadiumController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('stadium_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('state_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete', 'attr'=> ['class' => 'btn btn-danger']))
+            ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
     }

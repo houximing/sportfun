@@ -115,9 +115,11 @@ class Stadium
     private $suburb;
 
     /**
-     * @var string
+     * @var State
      *
-     * @ORM\Column(name="state", type="string", length=50)
+     * @ORM\Column(name="state", type="integer", length=5)
+     * @ORM\ManyToOne(targetEntity="State", inversedBy="stadiums")
+     * @ORM\JoinColumn(name="state", referencedColumnName="id")
      */
     private $state;
 
@@ -259,7 +261,7 @@ class Stadium
     /**
      * Set state
      *
-     * @param string $state
+     * @param State $state
      *
      * @return Stadium
      */
@@ -273,7 +275,7 @@ class Stadium
     /**
      * Get state
      *
-     * @return string
+     * @return State
      */
     public function getState()
     {
@@ -562,4 +564,3 @@ class Stadium
         return $iconMap[$this->getChain()];
     }
 }
-

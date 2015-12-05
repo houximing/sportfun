@@ -125,4 +125,3 @@ class Suburb
         return $this->status;
     }
 }
-
