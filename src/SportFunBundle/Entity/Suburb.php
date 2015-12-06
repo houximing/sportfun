@@ -2,6 +2,7 @@
 
 namespace SportFunBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -42,6 +43,16 @@ class Suburb
      */
     private $status;
 
+
+    /**
+     * @var Stadium[]
+     * @ORM\OneToMany(targetEntity="Stadium", mappedBy="suburb")
+     */
+    private $stadiums;
+
+    public function __construct(){
+        $this->stadiums = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -124,4 +135,42 @@ class Suburb
     {
         return $this->status;
     }
+
+    /**
+     * @return Stadium[]
+     */
+    public function getStadiums()
+    {
+        return $this->stadiums;
+    }
+
+    /**
+     * @param Stadium[] $stadiums
+     */
+    public function setStadiums($stadiums)
+    {
+        $this->stadiums = $stadiums;
+    }
+
+    /**
+     * @param Stadium $stadium
+     */
+    public function addStadium($stadium){
+        $this->stadiums->add($stadium);
+    }
+
+    /**
+     * Remove stadium
+     *
+     * @param \SportFunBundle\Entity\Stadium $stadium
+     */
+    public function removeStadium(\SportFunBundle\Entity\Stadium $stadium)
+    {
+        $this->stadiums->removeElement($stadium);
+    }
+
+    public function __toString(){
+        return $this->getName();
+    }
+
 }

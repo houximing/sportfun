@@ -3,6 +3,7 @@
 namespace SportFunBundle\Form;
 
 use Doctrine\ORM\EntityRepository;
+use SportFunBundle\Entity\Stadium;
 use SportFunBundle\Entity\StateRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -21,17 +22,28 @@ class StadiumType extends AbstractType
         $builder
             ->add('name')
             ->add('code')
-            ->add('type')
+            ->add('type','choice',[
+                'choices' => Stadium::getTypeMap()
+            ])
             ->add('abn','text',[
                 'label' => "ABN"
             ])
             ->add('contactPerson')
             ->add('contactNumber')
             ->add('contactEmail')
-            ->add('logo')
+            ->add('logo','file',[
+                'label' => 'Upload logo',
+                'data_class' => null
+            ])
             ->add('code')
             ->add('address')
-            ->add('suburb')
+            ->add('suburb','entity',[
+                'class' => 'SportFunBundle:Suburb',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('s')
+                        ->orderBy('s.name', 'ASC');
+                }
+            ])
             ->add('state','entity',[
                 'class' => 'SportFunBundle:State',
                 'query_builder' => function (EntityRepository $er) {

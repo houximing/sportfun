@@ -2,6 +2,7 @@
 
 namespace SportFunBundle\Controller;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -50,6 +51,7 @@ class StadiumController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $this->uploadLogo($entity);
             $em->persist($entity);
             $em->flush();
 
@@ -76,7 +78,9 @@ class StadiumController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array('label' => 'Create','attr'=>[
+            'class' => 'btn btn-success'
+        ]));
 
         return $form;
     }
@@ -143,7 +147,6 @@ class StadiumController extends Controller
 
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
-
         return array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
@@ -192,6 +195,8 @@ class StadiumController extends Controller
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
         if ($editForm->isValid()) {
+            $this->uploadLogo($entity);
+
             $em->flush();
 
             return $this->redirect($this->generateUrl('stadium_edit', array('id' => $id)));
@@ -244,5 +249,15 @@ class StadiumController extends Controller
             ->add('submit', 'submit', array('label' => 'Delete', 'attr'=> ['class' => 'btn btn-danger']))
             ->getForm()
         ;
+    }
+
+    private function uploadLogo($entity){
+        /** @var UploadedFile $logoFile */
+        $logoFile = $entity->getLogo();
+        $fileName = md5(uniqid()).'.'.$logoFile->guessExtension();
+        $logoDir = $this->container->getParameter('kernel.root_dir') . '/../web/uploads/logos';
+
+        $logoFile->move($logoDir,$fileName);
+        $entity->setLogo($fileName);
     }
 }

@@ -9,5 +9,10 @@
     </h1>
 
     {{ form(edit_form) }}
-
+    <script>
+        $(document).ready(function(){
+            $("#sportfunbundle_stadium_logo").after("<div id='image_logo'><img src='{{ asset('uploads/logos/' ~ entity.logo) }}' width='200px' height='200px'></div>");
+        });
+    </script>
 {% endblock %}
+

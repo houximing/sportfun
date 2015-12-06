@@ -3,6 +3,7 @@
 namespace SportFunBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Stadium
@@ -90,6 +91,10 @@ class Stadium
      * @var string
      *
      * @ORM\Column(name="logo", type="string", length=100)
+     * @Assert\NotBlank(message="Please, upload the stadium logo in jpg/png format.")
+     * @Assert\Image(
+     *      maxSize = "1M",
+     *      maxSizeMessage = "File is Too big.")
      */
     private $logo;
 
@@ -108,9 +113,10 @@ class Stadium
     private $address;
 
     /**
-     * @var string
+     * @var Suburb
      *
-     * @ORM\Column(name="suburb", type="string", length=100)
+     * @ORM\ManyToOne(targetEntity="Suburb", inversedBy="stadiums")
+     * @ORM\JoinColumn(name="suburb", referencedColumnName="id")
      */
     private $suburb;
 
@@ -236,7 +242,7 @@ class Stadium
     /**
      * Set suburb
      *
-     * @param string $suburb
+     * @param Suburb $suburb
      *
      * @return Stadium
      */
@@ -250,7 +256,7 @@ class Stadium
     /**
      * Get suburb
      *
-     * @return string
+     * @return Suburb
      */
     public function getSuburb()
     {
@@ -397,7 +403,13 @@ class Stadium
 
     public function getTypeText(){
 
-        $typeMap = [
+        $typeMap = self::getTypeMap();
+
+        return $typeMap[$this->getType()];
+    }
+
+    public static function getTypeMap(){
+        return [
             self::TYPE_AQUA => "Aquatics",
             self::TYPE_CINIMA => "Cinima",
             self::TYPE_FITNESS => "Fitness",
@@ -406,8 +418,6 @@ class Stadium
             self::TYPE_RECREATION => "Recreation/Leisure",
             self::TYPE_SIGHT => "Sightseeing",
         ];
-
-        return $typeMap[$this->getType()];
     }
 
 
