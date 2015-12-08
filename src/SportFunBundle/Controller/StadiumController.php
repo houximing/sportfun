@@ -36,6 +36,25 @@ class StadiumController extends Controller
             'entities' => $entities,
         );
     }
+
+    /**
+     * Lists all Stadium entities.
+     *
+     * @Route("/list/{suburb}", name="stadium_list")
+     * @Method("GET")
+     * @Template()
+     */
+    public function listAction($suburb)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $suburb = $em->find('SportFunBundle:Suburb',$suburb);
+        $entities = $em->getRepository('SportFunBundle:Stadium')->findAllAroundSuburb($suburb);
+
+        return array(
+            'entities' => $entities,
+        );
+    }
+
     /**
      * Creates a new Stadium entity.
      *

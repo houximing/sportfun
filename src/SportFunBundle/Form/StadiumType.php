@@ -31,6 +31,11 @@ class StadiumType extends AbstractType
             ->add('contactPerson')
             ->add('contactNumber')
             ->add('contactEmail')
+            ->add('description','textarea',[
+                'attr' => [
+                    'placeholder' => 'Please add descriptions'
+                ]
+            ])
             ->add('logo','file',[
                 'label' => 'Upload logo',
                 'data_class' => null

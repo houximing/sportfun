@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Stadium
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="SportFunBundle\Entity\StadiumRepository")
  */
 class Stadium
 {
@@ -86,6 +86,13 @@ class Stadium
      * @ORM\Column(name="contact_email", type="string", length=100)
      */
     private $contactEmail;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text")
+     */
+    private $description;
 
     /**
      * @var string
@@ -572,4 +579,22 @@ class Stadium
         ];
         return $iconMap[$this->getChain()];
     }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+
 }

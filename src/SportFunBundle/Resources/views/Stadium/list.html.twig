@@ -1,0 +1,44 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Stadium list</h1>
+    {% for entity in entities %}
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <a href="{{ path('stadium_show',{'id':entity.id}) }}" class="white">
+                    {{ entity.name }}
+                </a>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-7">
+                        <div>
+                            <span class="label label-success">{{ entity.typeText }}</span>
+                        </div>
+                        <div>
+                            <h4>
+                              Contact details
+                            </h4>
+                            <div>Contact: {{ entity.contactPerson }}</div>
+                            <div>Contact Number: {{ entity.contactNumber }}</div>
+                            <div>Contact Email: {{ entity.contactEmail }}</div>
+                            <div>Address: {{ entity.address }} {{ entity.suburb.name }} {{ entity.suburb.postcode }}</div>
+                        </div>
+                        <div>
+                            <h4>
+                                Description
+                            </h4>
+                            {{ entity.description }}
+                        </div>
+                    </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-xs-6 col-md-4">
+                        <a href="#" class="thumbnail">
+                            <img src="{{ asset("/uploads/logos/" ~ entity.logo) }}" alt="{{ entity.name }}" class="standard-thumbnail img-thumbnail">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

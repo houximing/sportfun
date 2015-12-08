@@ -1,4 +1,17 @@
 #image_logo{
     margin: 10px 0;
 }
+.standard-thumbnail{
+    width:150px;
+    height:150px;
+}
+a.white{
+    color:#fff;
+}
+a.white:hover{
+    color:#fff;
+}
+a.white:visited{
+    color:#fff;
+}
 
