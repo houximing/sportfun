@@ -56,6 +56,23 @@ class StadiumController extends Controller
     }
 
     /**
+     * Stadium detail.
+     *
+     * @Route("/details/{id}", name="stadium_details")
+     * @Method("GET")
+     * @Template()
+     */
+    public function detailAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $stadium = $em->find('SportFunBundle:Stadium',$id);
+
+        return array(
+            'entity' => $stadium,
+        );
+    }
+
+    /**
      * Creates a new Stadium entity.
      *
      * @Route("/", name="stadium_create")

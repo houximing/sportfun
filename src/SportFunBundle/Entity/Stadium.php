@@ -156,6 +156,13 @@ class Stadium
      */
     private $longitude;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tag", type="string", length=100)
+     */
+    private $tag;
+
 
     /**
      * @var integer
@@ -596,5 +603,34 @@ class Stadium
         $this->description = $description;
     }
 
+    /**
+     * @return string
+     */
+    public function getTag()
+    {
+        return $this->tag;
+    }
 
+    /**
+     * @param string $tag
+     */
+    public function setTag($tag)
+    {
+        $this->tag = $tag;
+    }
+
+    /**
+     * tag1,tag2
+     * @return array
+     */
+    public function getTagParts(){
+        $tagParts = [];
+        if($this->getTag()){
+            $tags = explode(",", $this->getTag());
+            foreach($tags as $tag){
+                $tagParts[] = trim($tag);
+            }
+        }
+        return $tagParts;
+    }
 }

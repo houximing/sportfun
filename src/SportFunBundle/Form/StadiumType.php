@@ -41,6 +41,7 @@ class StadiumType extends AbstractType
                 'data_class' => null
             ])
             ->add('code')
+            ->add('tag')
             ->add('address')
             ->add('suburb','entity',[
                 'class' => 'SportFunBundle:Suburb',

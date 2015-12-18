@@ -5,7 +5,7 @@
     {% for entity in entities %}
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <a href="{{ path('stadium_show',{'id':entity.id}) }}" class="white">
+                <a href="{{ path('stadium_details',{'id':entity.id}) }}" class="white">
                     {{ entity.name }}
                 </a>
             </div>
@@ -17,18 +17,29 @@
                         </div>
                         <div>
                             <h4>
-                              Contact details
+                                Address
                             </h4>
-                            <div>Contact: {{ entity.contactPerson }}</div>
-                            <div>Contact Number: {{ entity.contactNumber }}</div>
-                            <div>Contact Email: {{ entity.contactEmail }}</div>
-                            <div>Address: {{ entity.address }} {{ entity.suburb.name }} {{ entity.suburb.postcode }}</div>
+                            <div>{{ entity.address }}</div>
+                            <div>{{ entity.suburb.name }}</div>
+                            <div>{{ entity.state.name }} {{ entity.suburb.postcode }}</div>
+                        </div>
+                        <div>
+                            <h4>
+                                {% for tag in entity.getTagParts %}
+                                    <span class="label label-warning">{{ tag }}</span>
+                                {% endfor %}
+                            </h4>
                         </div>
                         <div>
                             <h4>
                                 Description
                             </h4>
                             {{ entity.description }}
+                        </div>
+                        <div>
+                             <a href="{{ path('stadium_details',{'id':entity.id })}}" class="btn btn-success">
+                                View Stadium
+                             </a>
                         </div>
                     </div>
                     <div class="col-md-1"></div>

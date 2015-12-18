@@ -10,4 +10,24 @@ namespace SportFunBundle\Entity;
  */
 class SuburbRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @param string $postsub
+     * @return array
+     */
+    public function findByNameOrPostCode($postsub){
+
+        $qb = $this->createQueryBuilder('s')
+            ->where('s.postcode LIKE :postcode or s.name LIKE :name')
+            ->andhere('s.status = :active')
+            ->setParameter('postcode', "'%". $postsub . "%'")
+            ->setParameter('name', "'%" . $postsub . "%'")
+            ->setParameter('active' , )
+            ->setMaxResults(5)
+            ->getQuery();
+
+        $suburbs = $qb->getResult();
+var_dump($suburbs);
+        return $suburbs;
+
+    }
 }

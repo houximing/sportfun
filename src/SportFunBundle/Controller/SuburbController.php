@@ -2,6 +2,7 @@
 
 namespace SportFunBundle\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -122,6 +123,22 @@ class SuburbController extends Controller
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
         );
+    }
+
+    /**
+     * Finds and displays a Suburb entity by suburb name or postcode.
+     *
+     * @Route("/list/{postsub}", name="suburb_show")
+     * @Method("GET")
+     * @Template()
+     */
+    public function showSuburbAction($postsub)
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        $suburbs = $em->getRepository('SportFunBundle:Suburb')->findByNameOrPostCode($postsub);
+
+        return new JsonResponse($suburbs);
     }
 
     /**
