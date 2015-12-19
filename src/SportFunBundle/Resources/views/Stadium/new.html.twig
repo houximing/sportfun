@@ -1,15 +1,13 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Stadium creation</h1>
+    <h1>Stadium creation
+        <a href="{{ path('stadium') }}" class="btn btn-warning">
+            Back to the list
+        </a>
+    </h1>
 
     {{ form(form) }}
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('stadium') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
+
 {% endblock %}

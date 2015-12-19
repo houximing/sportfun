@@ -6,17 +6,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Suburb
+ * State
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="SportFunBundle\Entity\SuburbRepository")
+ * @ORM\Entity(repositoryClass="SportFunBundle\Entity\StateRepository")
  */
-class Suburb
+class State
 {
-    const STATUS_ACTIVE = 1;
-    const STATUS_INACTIVE = 0;
-
-
     /**
      * @var integer
      *
@@ -29,30 +25,16 @@ class Suburb
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=20)
      */
     private $name;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="postcode", type="string", length=100)
-     */
-    private $postcode;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="status", type="smallint")
-     */
-    private $status;
-
-
-    /**
      * @var Stadium[]
-     * @ORM\OneToMany(targetEntity="Stadium", mappedBy="suburb")
+     * @ORM\OneToMany(targetEntity="Stadium", mappedBy="state")
      */
     private $stadiums;
+
 
     public function __construct(){
         $this->stadiums = new ArrayCollection();
@@ -73,7 +55,7 @@ class Suburb
      *
      * @param string $name
      *
-     * @return Suburb
+     * @return State
      */
     public function setName($name)
     {
@@ -90,54 +72,6 @@ class Suburb
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set postcode
-     *
-     * @param string $postcode
-     *
-     * @return Suburb
-     */
-    public function setPostcode($postcode)
-    {
-        $this->postcode = $postcode;
-
-        return $this;
-    }
-
-    /**
-     * Get postcode
-     *
-     * @return string
-     */
-    public function getPostcode()
-    {
-        return $this->postcode;
-    }
-
-    /**
-     * Set status
-     *
-     * @param integer $status
-     *
-     * @return Suburb
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return integer
-     */
-    public function getStatus()
-    {
-        return $this->status;
     }
 
     /**
@@ -163,6 +97,7 @@ class Suburb
         $this->stadiums->add($stadium);
     }
 
+
     /**
      * Remove stadium
      *
@@ -176,6 +111,4 @@ class Suburb
     public function __toString(){
         return $this->getName();
     }
-
 }
-

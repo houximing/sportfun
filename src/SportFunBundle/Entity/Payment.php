@@ -156,4 +156,3 @@ class Payment
         return $this->type;
     }
 }
-

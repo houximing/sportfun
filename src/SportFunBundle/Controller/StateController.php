@@ -2,27 +2,26 @@
 
 namespace SportFunBundle\Controller;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use SportFunBundle\Entity\Suburb;
-use SportFunBundle\Form\SuburbType;
+use SportFunBundle\Entity\State;
+use SportFunBundle\Form\StateType;
 
 /**
- * Suburb controller.
+ * State controller.
  *
- * @Route("/suburb")
+ * @Route("/state")
  */
-class SuburbController extends Controller
+class StateController extends Controller
 {
 
     /**
-     * Lists all Suburb entities.
+     * Lists all State entities.
      *
-     * @Route("/", name="suburb")
+     * @Route("/", name="state")
      * @Method("GET")
      * @Template()
      */
@@ -30,22 +29,22 @@ class SuburbController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('SportFunBundle:Suburb')->findAll();
+        $entities = $em->getRepository('SportFunBundle:State')->findAll();
 
         return array(
             'entities' => $entities,
         );
     }
     /**
-     * Creates a new Suburb entity.
+     * Creates a new State entity.
      *
-     * @Route("/", name="suburb_create")
+     * @Route("/", name="state_create")
      * @Method("POST")
-     * @Template("SportFunBundle:Suburb:new.html.twig")
+     * @Template("SportFunBundle:State:new.html.twig")
      */
     public function createAction(Request $request)
     {
-        $entity = new Suburb();
+        $entity = new State();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
@@ -54,7 +53,7 @@ class SuburbController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('suburb_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('state_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -64,16 +63,16 @@ class SuburbController extends Controller
     }
 
     /**
-     * Creates a form to create a Suburb entity.
+     * Creates a form to create a State entity.
      *
-     * @param Suburb $entity The entity
+     * @param State $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Suburb $entity)
+    private function createCreateForm(State $entity)
     {
-        $form = $this->createForm(new SuburbType(), $entity, array(
-            'action' => $this->generateUrl('suburb_create'),
+        $form = $this->createForm(new StateType(), $entity, array(
+            'action' => $this->generateUrl('state_create'),
             'method' => 'POST',
         ));
 
@@ -83,15 +82,15 @@ class SuburbController extends Controller
     }
 
     /**
-     * Displays a form to create a new Suburb entity.
+     * Displays a form to create a new State entity.
      *
-     * @Route("/new", name="suburb_new")
+     * @Route("/new", name="state_new")
      * @Method("GET")
      * @Template()
      */
     public function newAction()
     {
-        $entity = new Suburb();
+        $entity = new State();
         $form   = $this->createCreateForm($entity);
 
         return array(
@@ -101,9 +100,9 @@ class SuburbController extends Controller
     }
 
     /**
-     * Finds and displays a Suburb entity.
+     * Finds and displays a State entity.
      *
-     * @Route("/{id}", name="suburb_show")
+     * @Route("/{id}", name="state_show")
      * @Method("GET")
      * @Template()
      */
@@ -111,10 +110,10 @@ class SuburbController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('SportFunBundle:Suburb')->find($id);
+        $entity = $em->getRepository('SportFunBundle:State')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Suburb entity.');
+            throw $this->createNotFoundException('Unable to find State entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -126,27 +125,9 @@ class SuburbController extends Controller
     }
 
     /**
-     * Finds and displays a Suburb entity by suburb name or postcode.
+     * Displays a form to edit an existing State entity.
      *
-     * @Route("/list/{postsub}", name="suburb_list")
-     * @Method("GET")
-     * @Template()
-     */
-    public function showSuburbAction($postsub)
-    {
-        $em = $this->getDoctrine()->getManager();
-        
-        $suburbs = $em->getRepository('SportFunBundle:Suburb')->findByNameOrPostCode($postsub);
-        return [
-            'suburbs' => $suburbs
-        ];
-
-    }
-
-    /**
-     * Displays a form to edit an existing Suburb entity.
-     *
-     * @Route("/{id}/edit", name="suburb_edit")
+     * @Route("/{id}/edit", name="state_edit")
      * @Method("GET")
      * @Template()
      */
@@ -154,10 +135,10 @@ class SuburbController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('SportFunBundle:Suburb')->find($id);
+        $entity = $em->getRepository('SportFunBundle:State')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Suburb entity.');
+            throw $this->createNotFoundException('Unable to find State entity.');
         }
 
         $editForm = $this->createEditForm($entity);
@@ -171,16 +152,16 @@ class SuburbController extends Controller
     }
 
     /**
-    * Creates a form to edit a Suburb entity.
+    * Creates a form to edit a State entity.
     *
-    * @param Suburb $entity The entity
+    * @param State $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Suburb $entity)
+    private function createEditForm(State $entity)
     {
-        $form = $this->createForm(new SuburbType(), $entity, array(
-            'action' => $this->generateUrl('suburb_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new StateType(), $entity, array(
+            'action' => $this->generateUrl('state_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -189,20 +170,20 @@ class SuburbController extends Controller
         return $form;
     }
     /**
-     * Edits an existing Suburb entity.
+     * Edits an existing State entity.
      *
-     * @Route("/{id}", name="suburb_update")
+     * @Route("/{id}", name="state_update")
      * @Method("PUT")
-     * @Template("SportFunBundle:Suburb:edit.html.twig")
+     * @Template("SportFunBundle:State:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('SportFunBundle:Suburb')->find($id);
+        $entity = $em->getRepository('SportFunBundle:State')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Suburb entity.');
+            throw $this->createNotFoundException('Unable to find State entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -212,7 +193,7 @@ class SuburbController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('suburb_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('state_edit', array('id' => $id)));
         }
 
         return array(
@@ -222,9 +203,9 @@ class SuburbController extends Controller
         );
     }
     /**
-     * Deletes a Suburb entity.
+     * Deletes a State entity.
      *
-     * @Route("/{id}", name="suburb_delete")
+     * @Route("/{id}", name="state_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -234,21 +215,21 @@ class SuburbController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('SportFunBundle:Suburb')->find($id);
+            $entity = $em->getRepository('SportFunBundle:State')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Suburb entity.');
+                throw $this->createNotFoundException('Unable to find State entity.');
             }
 
             $em->remove($entity);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('suburb'));
+        return $this->redirect($this->generateUrl('state'));
     }
 
     /**
-     * Creates a form to delete a Suburb entity by id.
+     * Creates a form to delete a State entity by id.
      *
      * @param mixed $id The entity id
      *
@@ -257,7 +238,7 @@ class SuburbController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('suburb_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('state_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()

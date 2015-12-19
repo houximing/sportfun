@@ -1,0 +1,51 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>{{ entity.name }}</h1>
+    <div class="row">
+        <div class="col-lg-3 bottom-right" style="background-color: #5bc0de;">
+            <div style="padding-bottom: 30px;">
+                <h5>Search the stadium by postcode</h5>
+                <form name="search-stadium" id="search-stadium" action="/stadium/list" method="post">
+                    <div class="form-group">
+                        <input type="text" name="postcodesuburb" id="postcodesuburb" class="form-control" autocomplete="off" placeholder="Enter postcode or suburb name">
+                        <input type="hidden" name="suburb" id="suburb">
+                        <div id="search-result">
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div>
+                <iframe
+                        width="270"
+                        height="220"
+                        frameborder="0" style="border:0"
+                        src="https://www.google.com/maps/embed/v1/view?key=AIzaSyCg8cVNCKDTHWw4a4WJdH2dlmJfGKLGT2I
+                        &center={{ entity.latitude }},{{ entity.longitude }}
+                        &zoom=14" allowfullscreen>
+                </iframe>
+            </div>
+            <div>
+                <div class="alert alert-warning" role="alert">Stadium 1</div>
+                <div class="alert alert-warning" role="alert">Stadium 2</div>
+                <div class="alert alert-warning" role="alert">Stadium 3</div>
+                <div>Things to know</div>
+                <div>Pricing</div>
+                <div>Payment</div>
+                <div>Policy</div>
+                <div>Customer Services</div>
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <div class="jumbotron">
+                <img src="{{ asset('uploads/logos/' ~ entity.logo) }}" class="standard-thumbnail img-thumbnail" />
+            </div>
+            <div>
+                {{ form_start(staForm) }}
+                {{ form_widget(staForm) }}
+                {{ form_end(staForm) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

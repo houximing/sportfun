@@ -3,18 +3,22 @@
 namespace SportFunBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Stadium
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="SportFunBundle\Entity\StadiumRepository")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="maptype", type="smallint")
+ * @ORM\DiscriminatorMap({0 = "Stadium", 1 = "StadiumTennis"})
  */
 class Stadium
 {
 
     const TYPE_INDOOR = 0;
-    const TYPE_OUTDOOR = 1;
+    const TYPE_TENNIS = 1;
     const TYPE_RECREATION = 2;
     const TYPE_AQUA = 3;
     const TYPE_FITNESS = 4;
@@ -89,7 +93,18 @@ class Stadium
     /**
      * @var string
      *
+     * @ORM\Column(name="description", type="text")
+     */
+    private $description;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="logo", type="string", length=100)
+     * @Assert\NotBlank(message="Please, upload the stadium logo in jpg/png format.")
+     * @Assert\Image(
+     *      maxSize = "1M",
+     *      maxSizeMessage = "File is Too big.")
      */
     private $logo;
 
@@ -108,16 +123,18 @@ class Stadium
     private $address;
 
     /**
-     * @var string
+     * @var Suburb
      *
-     * @ORM\Column(name="suburb", type="string", length=100)
+     * @ORM\ManyToOne(targetEntity="Suburb", inversedBy="stadiums")
+     * @ORM\JoinColumn(name="suburb", referencedColumnName="id")
      */
     private $suburb;
 
     /**
-     * @var string
+     * @var State
      *
-     * @ORM\Column(name="state", type="string", length=50)
+     * @ORM\ManyToOne(targetEntity="State", inversedBy="stadiums")
+     * @ORM\JoinColumn(name="state", referencedColumnName="id")
      */
     private $state;
 
@@ -141,6 +158,13 @@ class Stadium
      * @ORM\Column(name="longitude", type="string", length=100)
      */
     private $longitude;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tag", type="string", length=100)
+     */
+    private $tag;
 
 
     /**
@@ -235,7 +259,7 @@ class Stadium
     /**
      * Set suburb
      *
-     * @param string $suburb
+     * @param Suburb $suburb
      *
      * @return Stadium
      */
@@ -249,7 +273,7 @@ class Stadium
     /**
      * Get suburb
      *
-     * @return string
+     * @return Suburb
      */
     public function getSuburb()
     {
@@ -259,7 +283,7 @@ class Stadium
     /**
      * Set state
      *
-     * @param string $state
+     * @param State $state
      *
      * @return Stadium
      */
@@ -273,7 +297,7 @@ class Stadium
     /**
      * Get state
      *
-     * @return string
+     * @return State
      */
     public function getState()
     {
@@ -396,17 +420,21 @@ class Stadium
 
     public function getTypeText(){
 
-        $typeMap = [
+        $typeMap = self::getTypeMap();
+
+        return $typeMap[$this->getType()];
+    }
+
+    public static function getTypeMap(){
+        return [
             self::TYPE_AQUA => "Aquatics",
             self::TYPE_CINIMA => "Cinima",
             self::TYPE_FITNESS => "Fitness",
             self::TYPE_INDOOR => "Indoor Sports",
-            self::TYPE_OUTDOOR => "Outdoor Sports",
+            self::TYPE_TENNIS => "Tennis",
             self::TYPE_RECREATION => "Recreation/Leisure",
             self::TYPE_SIGHT => "Sightseeing",
         ];
-
-        return $typeMap[$this->getType()];
     }
 
 
@@ -561,5 +589,63 @@ class Stadium
         ];
         return $iconMap[$this->getChain()];
     }
-}
 
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTag()
+    {
+        return $this->tag;
+    }
+
+    /**
+     * @param string $tag
+     */
+    public function setTag($tag)
+    {
+        $this->tag = $tag;
+    }
+
+    /**
+     * tag1,tag2
+     * @return array
+     */
+    public function getTagParts(){
+        $tagParts = [];
+        if($this->getTag()){
+            $tags = explode(",", $this->getTag());
+            foreach($tags as $tag){
+                $tagParts[] = trim($tag);
+            }
+        }
+        return $tagParts;
+    }
+
+    protected function getAvailability(){
+
+    }
+
+    public static function getInstance($type){
+        if($type == self::TYPE_TENNIS) {
+            return new StadiumTennis();
+        } else {
+            return new Stadium();
+        }
+    }
+}

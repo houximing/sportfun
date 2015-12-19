@@ -39,7 +39,9 @@
             </tr>
             <tr>
                 <th>Logo</th>
-                <td>{{ entity.logo }}</td>
+                <td>
+                    <img src="{{ asset("/uploads/logos/" ~ entity.logo) }}"  width='200px' height='200px'>
+                </td>
             </tr>
             <tr>
                 <th>Address</th>

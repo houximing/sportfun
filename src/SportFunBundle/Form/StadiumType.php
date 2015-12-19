@@ -2,9 +2,14 @@
 
 namespace SportFunBundle\Form;
 
+use Doctrine\ORM\EntityRepository;
+use SportFunBundle\Entity\Stadium;
+use SportFunBundle\Entity\StateRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints\Choice;
 
 class StadiumType extends AbstractType
 {
@@ -17,21 +22,56 @@ class StadiumType extends AbstractType
         $builder
             ->add('name')
             ->add('code')
-            ->add('type')
-            ->add('abn')
+            ->add('type','choice',[
+                'choices' => Stadium::getTypeMap()
+            ])
+            ->add('abn','text',[
+                'label' => "ABN"
+            ])
             ->add('contactPerson')
             ->add('contactNumber')
             ->add('contactEmail')
-            ->add('logo')
+            ->add('description','textarea',[
+                'attr' => [
+                    'placeholder' => 'Please add descriptions'
+                ]
+            ])
+            ->add('logo','file',[
+                'label' => 'Upload logo',
+                'data_class' => null
+            ])
             ->add('code')
+            ->add('tag')
             ->add('address')
-            ->add('suburb')
-            ->add('state')
+            ->add('suburb','entity',[
+                'class' => 'SportFunBundle:Suburb',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('s')
+                        ->orderBy('s.name', 'ASC');
+                }
+            ])
+            ->add('state','entity',[
+                'class' => 'SportFunBundle:State',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('s')
+                        ->orderBy('s.name', 'ASC');
+                }
+            ])
             ->add('postcode')
             ->add('latitude')
             ->add('longitude')
-            ->add('chain')
-            ->add('status')
+            ->add('chain','choice',[
+                "choices" => [
+                    "Yes" => 1,
+                    "No" => 0
+                ],'choices_as_values' => true,
+            ] )
+            ->add('status','choice',[
+                "choices" => [
+                    "Active" => 1,
+                    "Inactive" => 0
+                ],'choices_as_values' => true,
+            ] )
         ;
     }
     

@@ -1,16 +1,18 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Stadium edit</h1>
-
-    {{ form(edit_form) }}
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('stadium') }}">
+    <h1>
+        Stadium edit
+        <a href="{{ path('stadium') }}" class="btn btn-warning">
             Back to the list
         </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+    </h1>
+
+    {{ form(edit_form) }}
+    <script>
+        $(document).ready(function(){
+            $("#sportfunbundle_stadium_logo").after("<div id='image_logo'><img src='{{ asset('uploads/logos/' ~ entity.logo) }}' width='200px' height='200px'></div>");
+        });
+    </script>
 {% endblock %}
+

@@ -2,6 +2,9 @@
 
 namespace SportFunBundle\Controller;
 
+use SportFunBundle\Entity\StadiumTennis;
+use SportFunBundle\Form\StadiumTennisType;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -30,11 +33,54 @@ class StadiumController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('SportFunBundle:Stadium')->findAll();
+        return array(
+            'entities' => $entities,
+        );
+    }
+
+    /**
+     * Lists all Stadium entities.
+     *
+     * @Route("/list", name="stadium_list")
+     * @Method("POST")
+     * @Template()
+     */
+    public function listAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $suburb = $request->get('suburb');
+        $suburb = $em->find('SportFunBundle:Suburb',$suburb);
+        $entities = $em->getRepository('SportFunBundle:Stadium')->findAllAroundSuburb($suburb);
 
         return array(
             'entities' => $entities,
         );
     }
+
+    /**
+     * Stadium detail.
+     *
+     * @Route("/details/{id}", name="stadium_details")
+     * @Method("GET")
+     * @Template()
+     */
+    public function detailAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $stadium = $em->find('SportFunBundle:Stadium',$id);
+        $stadiumTennisForm = $this->createForm(new StadiumTennisType(), $stadium, array(
+            'action' => $this->generateUrl('stadium_create'),
+            'method' => 'POST',
+            'data' => [
+                'stadium' => $stadium
+            ]
+        ));
+        return array(
+            'entity' => $stadium,
+            'staForm' => $stadiumTennisForm->createView()
+        );
+    }
+
     /**
      * Creates a new Stadium entity.
      *
@@ -50,8 +96,10 @@ class StadiumController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $this->uploadLogo($entity);
             $em->persist($entity);
             $em->flush();
+            $this->updateStadiumType($request, $entity->getId());
 
             return $this->redirect($this->generateUrl('stadium_show', array('id' => $entity->getId())));
         }
@@ -76,7 +124,9 @@ class StadiumController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array('label' => 'Create','attr'=>[
+            'class' => 'btn btn-success'
+        ]));
 
         return $form;
     }
@@ -143,7 +193,6 @@ class StadiumController extends Controller
 
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
-
         return array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
@@ -165,7 +214,9 @@ class StadiumController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', array('label' => 'Update','attr'=>[
+            "class" => "btn btn-success"
+        ]));
 
         return $form;
     }
@@ -189,9 +240,10 @@ class StadiumController extends Controller
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
-
         if ($editForm->isValid()) {
+            $this->uploadLogo($entity);
             $em->flush();
+            $this->updateStadiumType($request, $entity->getId());
 
             return $this->redirect($this->generateUrl('stadium_edit', array('id' => $id)));
         }
@@ -243,5 +295,21 @@ class StadiumController extends Controller
             ->add('submit', 'submit', array('label' => 'Delete', 'attr'=> ['class' => 'btn btn-danger']))
             ->getForm()
         ;
+    }
+
+    private function uploadLogo($entity){
+        /** @var UploadedFile $logoFile */
+        $logoFile = $entity->getLogo();
+        $fileName = md5(uniqid()).'.'.$logoFile->guessExtension();
+        $logoDir = $this->container->getParameter('kernel.root_dir') . '/../web/uploads/logos';
+
+        $logoFile->move($logoDir,$fileName);
+        $entity->setLogo($fileName);
+    }
+
+    private function updateStadiumType($request, $id)
+    {
+        $data = $request->get('sportfunbundle_stadium');
+        $this->getDoctrine()->getManager()->getRepository('SportFunBundle:Stadium')->updateMapType($id, $data['type']);
     }
 }
