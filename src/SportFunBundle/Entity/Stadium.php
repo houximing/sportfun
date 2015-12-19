@@ -10,12 +10,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="SportFunBundle\Entity\StadiumRepository")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="maptype", type="smallint")
+ * @ORM\DiscriminatorMap({0 = "Stadium", 1 = "StadiumTennis"})
  */
 class Stadium
 {
 
     const TYPE_INDOOR = 0;
-    const TYPE_OUTDOOR = 1;
+    const TYPE_TENNIS = 1;
     const TYPE_RECREATION = 2;
     const TYPE_AQUA = 3;
     const TYPE_FITNESS = 4;
@@ -428,7 +431,7 @@ class Stadium
             self::TYPE_CINIMA => "Cinima",
             self::TYPE_FITNESS => "Fitness",
             self::TYPE_INDOOR => "Indoor Sports",
-            self::TYPE_OUTDOOR => "Outdoor Sports",
+            self::TYPE_TENNIS => "Tennis",
             self::TYPE_RECREATION => "Recreation/Leisure",
             self::TYPE_SIGHT => "Sightseeing",
         ];
@@ -632,5 +635,17 @@ class Stadium
             }
         }
         return $tagParts;
+    }
+
+    protected function getAvailability(){
+
+    }
+
+    public static function getInstance($type){
+        if($type == self::TYPE_TENNIS) {
+            return new StadiumTennis();
+        } else {
+            return new Stadium();
+        }
     }
 }

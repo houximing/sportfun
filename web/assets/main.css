@@ -14,4 +14,7 @@ a.white:hover{
 a.white:visited{
     color:#fff;
 }
+.ajax-list{
+    cursor: pointer;
+}
 

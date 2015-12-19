@@ -2,6 +2,7 @@
 
 namespace SportFunBundle\Controller;
 
+use SportFunBundle\Entity\StadiumTennis;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -31,7 +32,6 @@ class StadiumController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('SportFunBundle:Stadium')->findAll();
-
         return array(
             'entities' => $entities,
         );
@@ -40,13 +40,14 @@ class StadiumController extends Controller
     /**
      * Lists all Stadium entities.
      *
-     * @Route("/list/{suburb}", name="stadium_list")
-     * @Method("GET")
+     * @Route("/list", name="stadium_list")
+     * @Method("POST")
      * @Template()
      */
-    public function listAction($suburb)
+    public function listAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
+        $suburb = $request->get('suburb');
         $suburb = $em->find('SportFunBundle:Suburb',$suburb);
         $entities = $em->getRepository('SportFunBundle:Stadium')->findAllAroundSuburb($suburb);
 

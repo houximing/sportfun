@@ -13,6 +13,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Suburb
 {
+    const STATUS_ACTIVE = 1;
+    const STATUS_INACTIVE = 0;
+
+
     /**
      * @var integer
      *

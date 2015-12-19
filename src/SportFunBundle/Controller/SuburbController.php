@@ -128,7 +128,7 @@ class SuburbController extends Controller
     /**
      * Finds and displays a Suburb entity by suburb name or postcode.
      *
-     * @Route("/list/{postsub}", name="suburb_show")
+     * @Route("/list/{postsub}", name="suburb_list")
      * @Method("GET")
      * @Template()
      */
@@ -137,8 +137,10 @@ class SuburbController extends Controller
         $em = $this->getDoctrine()->getManager();
         
         $suburbs = $em->getRepository('SportFunBundle:Suburb')->findByNameOrPostCode($postsub);
+        return [
+            'suburbs' => $suburbs
+        ];
 
-        return new JsonResponse($suburbs);
     }
 
     /**

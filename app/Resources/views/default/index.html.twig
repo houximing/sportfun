@@ -12,13 +12,11 @@
                     Please search by postcode or suburb name
                     <form name="search-stadium" id="search-stadium" action="/stadium/list" method="post">
                         <div class="form-group">
-                            <input type="text" name="postcodesuburb" id="postcodesuburb" class="form-control">
+                            <input type="text" name="postcodesuburb" id="postcodesuburb" class="form-control" autocomplete="off" placeholder="Enter postcode or suburb name">
+                            <input type="hidden" name="suburb" id="suburb">
                             <div id="search-result">
 
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" value="Search" class="btn btn-success ">
                         </div>
                     </form>
                 </p>
@@ -26,17 +24,7 @@
 
         </div>
     </div>
-    <script>
-        $(document).ready(function(){
-            $("#postcodesuburb").keyup(function(){
-                if($(this).val().length > 1) {
-                    $.get('/suburb/list/' + encodeURIComponent($(this).val()), function(data){
-                        console.log(data)
-                    });
-                }
-            });
-        });
-    </script>
+
 {% endblock %}
 
 {% block stylesheets %}
