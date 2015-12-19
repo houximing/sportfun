@@ -18,4 +18,15 @@ class StadiumRepository extends \Doctrine\ORM\EntityRepository
 
         return $qb->getResult();
     }
+
+    public function updateMapType($id, $type) {
+        $connection = $this->getEntityManager()->getConnection();
+        $sql = "UPDATE stadium
+                SET stadium.maptype = :type
+                WHERE id = :id";
+        $stmt = $connection->prepare($sql);
+        $stmt->bindValue('type' , $type);
+        $stmt->bindValue('id', $id);
+        $stmt->execute();
+    }
 }

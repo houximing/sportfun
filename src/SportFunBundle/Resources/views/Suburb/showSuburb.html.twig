@@ -1,0 +1,5 @@
+{% for suburb in suburbs %}
+    <div class="ajax-list" id="suburb-{{ suburb.id }}">
+        {{ suburb.name }}, {{ suburb.postcode }}
+    </div>
+{% endfor %}

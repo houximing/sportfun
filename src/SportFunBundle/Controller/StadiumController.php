@@ -3,6 +3,7 @@
 namespace SportFunBundle\Controller;
 
 use SportFunBundle\Entity\StadiumTennis;
+use SportFunBundle\Form\StadiumTennisType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -67,9 +68,16 @@ class StadiumController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $stadium = $em->find('SportFunBundle:Stadium',$id);
-
+        $stadiumTennisForm = $this->createForm(new StadiumTennisType(), $stadium, array(
+            'action' => $this->generateUrl('stadium_create'),
+            'method' => 'POST',
+            'data' => [
+                'stadium' => $stadium
+            ]
+        ));
         return array(
             'entity' => $stadium,
+            'staForm' => $stadiumTennisForm->createView()
         );
     }
 
@@ -91,6 +99,7 @@ class StadiumController extends Controller
             $this->uploadLogo($entity);
             $em->persist($entity);
             $em->flush();
+            $this->updateStadiumType($request, $entity->getId());
 
             return $this->redirect($this->generateUrl('stadium_show', array('id' => $entity->getId())));
         }
@@ -233,8 +242,8 @@ class StadiumController extends Controller
         $editForm->handleRequest($request);
         if ($editForm->isValid()) {
             $this->uploadLogo($entity);
-
             $em->flush();
+            $this->updateStadiumType($request, $entity->getId());
 
             return $this->redirect($this->generateUrl('stadium_edit', array('id' => $id)));
         }
@@ -296,5 +305,11 @@ class StadiumController extends Controller
 
         $logoFile->move($logoDir,$fileName);
         $entity->setLogo($fileName);
+    }
+
+    private function updateStadiumType($request, $id)
+    {
+        $data = $request->get('sportfunbundle_stadium');
+        $this->getDoctrine()->getManager()->getRepository('SportFunBundle:Stadium')->updateMapType($id, $data['type']);
     }
 }
