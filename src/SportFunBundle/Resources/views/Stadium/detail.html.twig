@@ -42,9 +42,9 @@
                 <img src="{{ asset('uploads/logos/' ~ entity.logo) }}" class="standard-thumbnail img-thumbnail" />
             </div>
             <div>
-                {{ form_start(staForm) }}
-                {{ form_widget(staForm) }}
-                {{ form_end(staForm) }}
+                {% if type == constant('SportFunBundle\\Entity\\Stadium::TYPE_TENNIS') %}
+                    {%  include('SportFunBundle:Stadium:tennis.html.twig') %}
+                {% endif %}
             </div>
         </div>
     </div>

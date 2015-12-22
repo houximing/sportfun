@@ -68,17 +68,20 @@ class StadiumController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $stadium = $em->find('SportFunBundle:Stadium',$id);
-        $stadiumTennisForm = $this->createForm(new StadiumTennisType(), $stadium, array(
-            'action' => $this->generateUrl('stadium_create'),
-            'method' => 'POST',
-            'data' => [
-                'stadium' => $stadium
-            ]
-        ));
-        return array(
-            'entity' => $stadium,
-            'staForm' => $stadiumTennisForm->createView()
-        );
+        if($stadium instanceof StadiumTennis) {
+            $stadiumTennisForm = $this->createForm(new StadiumTennisType($em), $stadium, array(
+                'action' => $this->generateUrl('stadium_create'),
+                'method' => 'POST',
+                'data' => [
+                    'stadium' => $stadium
+                ]
+            ));
+            return array(
+                'entity' => $stadium,
+                'type' => Stadium::TYPE_TENNIS,
+                'staForm' => $stadiumTennisForm->createView()
+            );
+        }
     }
 
     /**
