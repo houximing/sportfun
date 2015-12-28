@@ -1,6 +1,6 @@
 <?php
 
-namespace SportFunBundle\Form;
+namespace SportFunBundle\Form\Admin;
 
 use Doctrine\ORM\EntityRepository;
 use SportFunBundle\Entity\StadiumTennis;
@@ -12,40 +12,26 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints\Choice;
 
-class TennisCourtType extends AbstractType
+class AdminTennisCourtType extends AbstractType
 {
-    private $courtId = null;
-    private $em = null;
-    public function __construct($courtId, $em = null){
-        $this->courtId = $courtId;
-        $this->em = $em;
-    }
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /** @var TennisCourt $court */
-        $court = $this->em->find("SportFunBundle:TennisCourt",$this->courtId);
-
-        $builder
-            ->add('maxpeople', 'choice' ,[
-                'choices' => range(0,$court->getMaxpeople()),
+            $builder
+            ->add('maxpeople', 'integer' ,[
                 'label' => 'Max people'
-            ]);
-            if($court->getCanAdd()) {
-                $builder->add('addition', 'choice', [
-                    'choices' => range(1,10),
-                    'label' => "Additional number of people (\$ {$court->getAdditionalFare()} / each)"
-                ])
-                ->add('additionFare','hidden',[
-                    'data' => $court->getAdditionalFare()
-                ])
-                ;
-
-            }
-
+            ])->add('canAdd', 'checkbox', [
+                'label' => "Additional number of people?",
+                    'required' => false
+            ])->add('additionalFare','number',[
+                'label' => "Price for each person",
+                    'required' => false
+                ])->add('submit', 'submit', array('label' => 'Update','attr'=>[
+                    'class' => 'btn btn-success'
+                ]));
     }
     
     /**
@@ -63,6 +49,6 @@ class TennisCourtType extends AbstractType
      */
     public function getName()
     {
-        return 'sportfunbundle_stadiumtennis';
+        return 'sportfunbundle_stadiumtennisadmin';
     }
 }

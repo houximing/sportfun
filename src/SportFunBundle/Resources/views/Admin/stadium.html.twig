@@ -1,0 +1,24 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Stadium management{% endblock %}
+
+{% block body %}
+<h1>Stadium management</h1>
+    {% for key,stadiumgroup in stadiums %}
+        <h4>{{ keymap[key] }}</h4>
+        <div class="list-group">
+        {% for stadium in stadiumgroup %}
+            <a href="{{ path('stadium-details',{'id': stadium.id}) }}" class="list-group-item">
+                <h4 class="list-group-item-heading">{{ stadium.name }}</h4>
+                <p class="list-group-item-text">{{ stadium.description }}</p>
+                <div class="button-row">
+                    <button class="btn btn-info">Details</button>
+                </div>
+            </a>
+        {% endfor %}
+            <div class="button-row">
+                <a class="btn btn-danger" href="{{ path('stadium-add',{'type': key}) }}">Add a {{ keymap[key] }}</a>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

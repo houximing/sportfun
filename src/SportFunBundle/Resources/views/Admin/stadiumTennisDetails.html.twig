@@ -1,0 +1,48 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Stadium management{% endblock %}
+
+{% block body %}
+<h1>Stadium details</h1>
+    {% for court in stadium.courts %}
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                Court {{ loop.index }}
+            </div>
+            <div class="panel-body">
+                <div>
+                   <b>
+                        Max people:
+                   </b>
+                   {{ court.maxpeople }}
+                </div>
+                <div>
+                   <b>
+                        Fees for additional people
+                   </b>
+                   ${{ court.additionalFare }} each
+                </div>
+                <div class="button-row">
+                    <a href="{{ path('court-details',{'id':court.id}) }}" class="btn btn-info">Edit</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <p>
+        <div class="form-group">
+            <div>
+                Available for hiring pad?
+                <input type="checkbox" name="hirepad" id="hirepad">
+            </div>
+            Price for each pad
+            <div class="input-group col-lg-2">
+              <span class="input-group-addon">$</span>
+              <input type="text" class="form-control" name="hirePrice" id="hirePrice" aria-label="Amount (to the nearest dollar)">
+              <span class="input-group-addon">.00</span>
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-success">Save</button>
+              </div>
+            </div>
+        </div>
+    </p>
+{% endblock %}

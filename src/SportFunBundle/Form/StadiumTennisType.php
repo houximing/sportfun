@@ -20,7 +20,7 @@ class StadiumTennisType extends AbstractType
 
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array $optidons
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -30,6 +30,23 @@ class StadiumTennisType extends AbstractType
         $builder
             ->add('court', new TennisCourtType($courts->first()->getId(), $this->em), ['label' => false])
         ;
+        if($stadium->getHirepad()) {
+            $builder->add('hirepad', 'choice', [
+                'choices' => range(1,10),
+                'label' => "Hire pad (\$ {$stadium->getHirepadPrice()} / each)"
+            ])
+            ->add('hirePrice','hidden',[
+                'data' => $stadium->getHirepadPrice()
+            ])
+            ;
+
+        }
+        $builder->add('checkout','submit',[
+            'label' => 'Check out',
+            'attr' => [
+                'class' => 'btn-danger'
+            ]
+        ]);
     }
     
     /**

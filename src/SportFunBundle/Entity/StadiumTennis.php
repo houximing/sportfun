@@ -27,6 +27,27 @@ class StadiumTennis extends Stadium
      */
     private $hirepad;
 
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="hirepad_price", type="float")
+     */
+    private $hirepadPrice;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="unit", type="string")
+     */
+    private $unit;
+
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="unit_price", type="decimal", precision=10, scale=2)
+     */
+    private $unitPrice;
 
     public function __construct(){
         $this->courts = new ArrayCollection();
@@ -85,5 +106,55 @@ class StadiumTennis extends Stadium
     public function getAvailability(){
 
     }
+
+    /**
+     * @return float
+     */
+    public function getHirepadPrice()
+    {
+        return $this->hirepadPrice;
+    }
+
+    /**
+     * @param float $hirepadPrice
+     */
+    public function setHirepadPrice($hirepadPrice)
+    {
+        $this->hirepadPrice = $hirepadPrice;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUnit()
+    {
+        return $this->unit;
+    }
+
+    /**
+     * @param string $unit
+     */
+    public function setUnit($unit)
+    {
+        $this->unit = $unit;
+    }
+
+    /**
+     * @return float
+     */
+    public function getUnitPrice()
+    {
+        return $this->unitPrice;
+    }
+
+    /**
+     * @param float $unitPrice
+     */
+    public function setUnitPrice($unitPrice)
+    {
+        $this->unitPrice = $unitPrice;
+    }
+
+
 }
 

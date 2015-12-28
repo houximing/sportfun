@@ -3,6 +3,7 @@
 namespace SportFunBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * TennisCourt
@@ -25,8 +26,10 @@ class TennisCourt
      * @var integer
      *
      * @ORM\Column(name="maxpeople", type="integer")
+     * @Assert\Type(type="integer", message="Must be an integer.")
+     * @Assert\GreaterThan(value="0", message="Must be positive.")
      */
-    private $maxpeople;
+    protected $maxpeople;
 
     /**
      * @var boolean
@@ -38,7 +41,7 @@ class TennisCourt
     /**
      * @var float
      *
-     * @ORM\Column(name="additionalFare", type="float")
+     * @ORM\Column(name="additionalFare", type="float", precision=10, scale=2)
      */
     private $additionalFare;
 

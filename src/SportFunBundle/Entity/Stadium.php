@@ -139,6 +139,14 @@ class Stadium
     private $state;
 
     /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="stadiums")
+     * @ORM\JoinColumn(name="user", referencedColumnName="id")
+     */
+    private $user;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="postcode", type="string", length=15)
@@ -621,6 +629,23 @@ class Stadium
     {
         $this->tag = $tag;
     }
+
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
 
     /**
      * tag1,tag2

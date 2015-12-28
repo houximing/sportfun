@@ -18,3 +18,19 @@ a.white:visited{
     cursor: pointer;
 }
 
+div#myTabContent.active{
+    display:block;
+}
+div#myTabContent.fade{
+    display:none;
+}
+ul.nav li{
+    cursor: pointer;
+}
+div.tab-content{
+    padding:10px;
+}
+div.button-row{
+    margin: 10px 0;
+}
+
