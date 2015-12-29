@@ -13,6 +13,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class TennisCourt
 {
+
+    const STATUS_VACANT = 0;
+    const STATUS_OCCUPIED = 1;
+    const STATUS_HALF = 2;
+
     /**
      * @var integer
      *
@@ -43,21 +48,21 @@ class TennisCourt
      *
      * @ORM\Column(name="additionalFare", type="float", precision=10, scale=2)
      */
-    private $additionalFare;
+    private $additionalFare = 0;
 
     /**
      * @var array
      *
      * @ORM\Column(name="availability", type="string")
      */
-    private $availability;
+    private $availability = '';
 
     /**
      * @var integer
      *
      * @ORM\Column(name="status", type="smallint")
      */
-    private $status;
+    private $status = self::STATUS_VACANT;
 
     /**
      * var StadiumTennis

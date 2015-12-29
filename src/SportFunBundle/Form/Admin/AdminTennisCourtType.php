@@ -29,7 +29,7 @@ class AdminTennisCourtType extends AbstractType
             ])->add('additionalFare','number',[
                 'label' => "Price for each person",
                     'required' => false
-                ])->add('submit', 'submit', array('label' => 'Update','attr'=>[
+                ])->add('submit', 'submit', array('label' => 'Save','attr'=>[
                     'class' => 'btn btn-success'
                 ]));
     }

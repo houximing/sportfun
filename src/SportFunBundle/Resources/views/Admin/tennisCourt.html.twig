@@ -7,4 +7,21 @@
     {{ form_start(form) }}
     {{ form_widget(form) }}
     {{ form_end(form) }}
+    <script>
+        $(document).ready(function(){
+            toggleBox();
+        });
+
+        $("#sportfunbundle_stadiumtennisadmin_canAdd").click(function(){
+            toggleBox();
+        });
+        function toggleBox(){
+            if($("#sportfunbundle_stadiumtennisadmin_canAdd").prop('checked')){
+                $("#sportfunbundle_stadiumtennisadmin_additionalFare").parent().show();
+            } else {
+                $("#sportfunbundle_stadiumtennisadmin_additionalFare").parent().hide();
+                $("#sportfunbundle_stadiumtennisadmin_additionalFare").val(0);
+            }
+        }
+    </script>
 {% endblock %}

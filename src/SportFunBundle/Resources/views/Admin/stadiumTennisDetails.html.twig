@@ -28,21 +28,55 @@
             </div>
         </div>
     {% endfor %}
+    <div>
+        <a class="btn btn-danger" href="{{ path("court-add",{"id":stadium.id}) }}">Add court</a>
+    </div>
     <p>
-        <div class="form-group">
-            <div>
-                Available for hiring pad?
-                <input type="checkbox" name="hirepad" id="hirepad">
+        <form id="hirepadform">
+            <input type="hidden" name="stadiumid" value="{{ stadium.id }}" />
+            <div class="form-group">
+                <div>
+                    Available for hiring pad?
+                    <input type="checkbox" name="hirepad" id="hirepad" value="1"
+                            {% if stadium.hirepad%} checked="checked" {% endif %}>
+                </div>
+                <label id="price-label">Price for each pad</label>
+                <div class="input-group col-lg-2">
+                  <span class="input-group-addon">$</span>
+                  <input type="text" class="form-control" name="hirePrice" id="hirePrice" value="{{ stadium.hirepadPrice }}">
+                  <div class="input-group-btn">
+                    <button type="button" class="btn btn-success" id="saveHirePrice">Save</button>
+                  </div>
+                </div>
             </div>
-            Price for each pad
-            <div class="input-group col-lg-2">
-              <span class="input-group-addon">$</span>
-              <input type="text" class="form-control" name="hirePrice" id="hirePrice" aria-label="Amount (to the nearest dollar)">
-              <span class="input-group-addon">.00</span>
-              <div class="input-group-btn">
-                <button type="button" class="btn btn-success">Save</button>
-              </div>
-            </div>
-        </div>
+        </form>
     </p>
+    <script>
+        $(document).ready(function(){
+            toggleBox();
+        });
+
+        $("#hirepad").click(function(){
+            toggleBox();
+            //save hirepad status
+            updatePadHireDetails();
+        });
+
+        $("#saveHirePrice").click(function(){
+            updatePadHireDetails();
+        });
+        function toggleBox(){
+            if($("#hirepad").prop('checked')){
+                $("#hirePrice").parent().show();
+                $("#price-label").show();
+            } else {
+                $("#hirePrice").parent().hide();
+                $("#price-label").hide();
+            }
+        }
+
+        function updatePadHireDetails(){
+            $.post("/manage/hirepad",$('#hirepadform').serialize());
+        }
+    </script>
 {% endblock %}
