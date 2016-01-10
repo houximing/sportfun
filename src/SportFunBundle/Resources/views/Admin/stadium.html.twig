@@ -10,7 +10,24 @@
         {% for stadium in stadiumgroup %}
             <a href="{{ path('stadium-details',{'id': stadium.id}) }}" class="list-group-item">
                 <h4 class="list-group-item-heading">{{ stadium.name }}</h4>
-                <p class="list-group-item-text">{{ stadium.description }}</p>
+                <div>
+                    Name: {{ stadium.name }}
+                </div>
+                <div>
+                    Contact Person: {{ stadium.contactPerson }}
+                </div>
+                <div>
+                    Contact Number: {{ stadium.contactNumber }}
+                </div>
+                <div>
+                    Contact Email: {{ stadium.contactEmail }}
+                </div>
+                <div>
+                    Description: {{ stadium.description }}
+                </div>
+                <div>
+                    Address: {{ stadium.address }} {{ stadium.suburb }} {{ stadium.state }} {{ stadium.postcode }}
+                </div>
                 <div class="button-row">
                     <button class="btn btn-info">Details</button>
                 </div>

@@ -2,6 +2,7 @@
 
 namespace SportFunBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -174,6 +175,27 @@ class Stadium
      */
     private $tag;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="insurance", type="boolean", nullable=false)
+     */
+    private $incinsurance;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="gst", type="boolean", nullable=false)
+     */
+    private $incGST;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="equip", type="boolean", nullable=false)
+     */
+    private $equipRequired;
 
     /**
      * @var integer
@@ -181,6 +203,16 @@ class Stadium
      * @ORM\Column(name="status", type="smallint")
      */
     private $status = 1;
+
+    /**
+     * @var Equipment[]
+     * @ORM\OneToMany(targetEntity="Equipment", mappedBy="stadium", cascade={"persist"})
+     */
+    private $equipments;
+
+    public function __construct(){
+        $this->equipments = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -567,6 +599,37 @@ class Stadium
     }
 
     /**
+     * @return Equipment[]
+     */
+    public function getEquipments()
+    {
+        return $this->equipments;
+    }
+
+    /**
+     * @param Equipment[] $equipments
+     */
+    public function setEquipments($equipments)
+    {
+        $this->equipments = $equipments;
+    }
+
+    /**
+     * @param Equipment $equipment
+     */
+    public function addEquipment($equipment){
+        $this->equipments->add($equipment);
+    }
+
+    /**
+     * @param Equipment $equipment
+     */
+    public function removeEquipment($equipment){
+        $this->equipments->removeElement($equipment);
+    }
+
+
+    /**
      * Set chain
      *
      * @param integer $chain
@@ -645,6 +708,55 @@ class Stadium
     {
         $this->user = $user;
     }
+
+    /**
+     * @return string
+     */
+    public function getIncinsurance()
+    {
+        return $this->incinsurance;
+    }
+
+    /**
+     * @param string $incinsurance
+     */
+    public function setIncinsurance($incinsurance)
+    {
+        $this->incinsurance = $incinsurance;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIncGST()
+    {
+        return $this->incGST;
+    }
+
+    /**
+     * @param string $incGST
+     */
+    public function setIncGST($incGST)
+    {
+        $this->incGST = $incGST;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEquipRequired()
+    {
+        return $this->equipRequired;
+    }
+
+    /**
+     * @param string $equipRequired
+     */
+    public function setEquipRequired($equipRequired)
+    {
+        $this->equipRequired = $equipRequired;
+    }
+
 
 
     /**

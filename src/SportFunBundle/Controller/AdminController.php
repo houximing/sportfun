@@ -6,7 +6,9 @@ use SportFunBundle\Entity\Stadium;
 use SportFunBundle\Entity\StadiumTennis;
 use SportFunBundle\Entity\TennisCourt;
 use SportFunBundle\Entity\User;
+use SportFunBundle\Form\Admin\AdminStadiumType;
 use SportFunBundle\Form\Admin\AdminTennisCourtType;
+use SportFunBundle\Form\StadiumType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -55,15 +57,28 @@ class AdminController extends Controller
 
     /**
      * @Route("/stadium-details/{id}",name="stadium-details")
-     * @Method("GET")
+     * @Method({"GET","POST"})
      * @Template()
      */
-    public function stadiumDetailsAction($id)
+    public function stadiumDetailsAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $stadium = $em->find("SportFunBundle:Stadium",$id);
+        $stadiumEditForm = $this->createForm(new AdminStadiumType(), $stadium, array(
+            'method' => 'POST'
+        ));
+
+        if ( $request->getMethod() == 'POST') {
+            $stadiumEditForm->handleRequest($request);
+            if ($stadiumEditForm->isValid()) {
+                $em->persist($stadium);
+                $em->flush();
+            }
+        }
         if($stadium instanceof StadiumTennis){
-            return new Response($this->renderView('SportFunBundle:Admin:stadiumTennisDetails.html.twig',['stadium' => $stadium]));
+            return new Response($this->renderView('SportFunBundle:Admin:stadiumTennisDetails.html.twig',
+                ['stadium' => $stadium ,
+                 'form' => $stadiumEditForm->createView()]));
         }
     }
 
@@ -97,6 +112,8 @@ class AdminController extends Controller
         }
         return new Response($this->renderView('SportFunBundle:Admin:tennisCourt.html.twig',['court' => $court, 'form'=>$courtEditForm->createView()]));
     }
+
+
 
     /**
      * @Route("/court-add/{id}",name="court-add")

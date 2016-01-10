@@ -4,6 +4,34 @@
 
 {% block body %}
 <h1>Stadium details</h1>
+
+    <div class="panel panel-info">
+            <div class="panel-heading">
+                Details
+            </div>
+            <div class="panel-body">
+                {{ form_start(form) }}
+                {{ form_row(form.name) }}
+                {{ form_row(form.contactPerson) }}
+                {{ form_row(form.contactNumber) }}
+                {{ form_row(form.contactEmail) }}
+                {{ form_row(form.description) }}
+                {{ form_row(form.logo) }}
+                {{ form_row(form.tag) }}
+                {{ form_row(form.address) }}
+                {{ form_row(form.suburb) }}
+                {{ form_row(form.state) }}
+                {{ form_row(form.postcode) }}
+                {{ form_row(form.incinsurance) }}
+                {{ form_row(form.incGST) }}
+                {{ form_row(form.equipRequired) }}
+                <div class="div-hidden" id="equipments">
+                    <h5>Please add/remove your equipments</h5>
+                    <div id="equip-details"></div>
+                </div>
+                {{ form_row(form.submit) }}
+            </div>
+        </div>
     {% for court in stadium.courts %}
         <div class="panel panel-info">
             <div class="panel-heading">
@@ -54,6 +82,11 @@
     <script>
         $(document).ready(function(){
             toggleBox();
+            toggleEquip();
+        });
+
+        $("#sportfunbundle_stadiumadmin_equipRequired").change(function(){
+            toggleEquip();
         });
 
         $("#hirepad").click(function(){
@@ -65,6 +98,16 @@
         $("#saveHirePrice").click(function(){
             updatePadHireDetails();
         });
+
+        function toggleEquip(){
+            if($("#sportfunbundle_stadiumadmin_equipRequired").val() == 0){
+                //this is the yes selection -- don't know why, true is 0, false is 1....
+                $("#equipments").show();
+            } else {
+                $("#equipments").hide();
+            }
+        }
+
         function toggleBox(){
             if($("#hirepad").prop('checked')){
                 $("#hirePrice").parent().show();
@@ -78,5 +121,7 @@
         function updatePadHireDetails(){
             $.post("/manage/hirepad",$('#hirepadform').serialize());
         }
+
+
     </script>
 {% endblock %}

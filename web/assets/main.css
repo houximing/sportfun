@@ -33,4 +33,7 @@ div.tab-content{
 div.button-row{
     margin: 10px 0;
 }
+div.div-hidden{
+    display:none;
+}
 
