@@ -27,7 +27,18 @@
                 {{ form_row(form.equipRequired) }}
                 <div class="div-hidden" id="equipments">
                     <h5>Please add/remove your equipments</h5>
-                    <div id="equip-details"></div>
+                    <div id="equip-details">
+                        <div class="equip"  data-prototype="{{ form_widget(form.equipments.vars.prototype)|e }}">
+                            {% for equipment in form.equipments %}
+                                <div class="equip-item">
+                                    {{ form_row(equipment.name) }}
+                                    {{ form_row(equipment.price) }}
+                                    {{ form_row(equipment.unit) }}
+                                    {{ form_row(equipment.required) }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
                 {{ form_row(form.submit) }}
             </div>
@@ -121,7 +132,73 @@
         function updatePadHireDetails(){
             $.post("/manage/hirepad",$('#hirepadform').serialize());
         }
+        var $collectionHolder;
 
+        // setup an "add a tag" link
+        var $addTagLink = $('<a href="#" class="add_tag_link btn btn-success">Add a equipment</a>');
+        var $newLinkLi = $('<div></div>').append($addTagLink);
+
+        $(document).ready(function() {
+            // Get the ul that holds the collection of tags
+            $collectionHolder = $('div.equip');
+
+            // add the "add a tag" anchor and li to the tags ul
+            $collectionHolder.append($newLinkLi);
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+            $addTagLink.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // add a new tag form (see next code block)
+                addTagForm($collectionHolder, $newLinkLi);
+            });
+        });
+        function addTagForm($collectionHolder, $newLinkLi) {
+            // Get the data-prototype explained earlier
+            var prototype = $collectionHolder.data('prototype');
+
+            // get the new index
+            var index = $collectionHolder.data('index');
+
+            // Replace '__name__' in the prototype's HTML to
+            // instead be a number based on how many items we have
+            var newForm = prototype.replace(/__name__/g, index);
+
+            // increase the index with one for the next item
+            $collectionHolder.data('index', index + 1);
+
+            // Display the form in the page in an li, before the "Add a tag" link li
+            var $newFormLi = $('<div></div>').append(newForm);
+            $newLinkLi.before($newFormLi);
+            addTagFormDeleteLink($newFormLi);
+        }
+        $(document).ready(function() {
+            // Get the ul that holds the collection of tags
+            $collectionHolder = $('div.equip');
+
+            // add a delete link to all of the existing tag form li elements
+            $collectionHolder.find('div.equip-item').each(function() {
+                addTagFormDeleteLink($(this));
+            });
+
+            // ... the rest of the block from above
+        });
+        function addTagFormDeleteLink($tagFormLi) {
+            var $removeFormA = $('<a href="#" class="btn btn-danger">Delete this equipment</a>');
+            $tagFormLi.append($removeFormA);
+
+            $removeFormA.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // remove the li for the tag form
+                $tagFormLi.remove();
+            });
+        }
 
     </script>
 {% endblock %}

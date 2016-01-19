@@ -5,6 +5,7 @@ namespace SportFunBundle\Form\Admin;
 use Doctrine\ORM\EntityRepository;
 use SportFunBundle\Entity\Stadium;
 use SportFunBundle\Entity\StateRepository;
+use SportFunBundle\Form\EquipmentType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -71,6 +72,12 @@ class AdminStadiumType extends AbstractType
                 ],'choices_as_values' => true,
                 'label' => 'Does your venue require customer to hire the necessary activitity related equipment?'
             ] )
+            ->add('equipments','collection', [
+                'type' => new EquipmentType(),
+                'allow_add' => true,
+                'by_reference' => false,
+                'allow_delete' => true,
+            ])
             ->add('submit', 'submit', array('label' => 'Save','attr'=>[
                 'class' => 'btn btn-success'
             ]))

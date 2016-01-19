@@ -618,6 +618,7 @@ class Stadium
      * @param Equipment $equipment
      */
     public function addEquipment($equipment){
+        $equipment->setStadium($this);
         $this->equipments->add($equipment);
     }
 
@@ -625,6 +626,7 @@ class Stadium
      * @param Equipment $equipment
      */
     public function removeEquipment($equipment){
+        $equipment->setStadium(null);
         $this->equipments->removeElement($equipment);
     }
 

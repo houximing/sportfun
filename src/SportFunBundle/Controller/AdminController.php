@@ -63,6 +63,7 @@ class AdminController extends Controller
     public function stadiumDetailsAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
+        /** @var Stadium $stadium */
         $stadium = $em->find("SportFunBundle:Stadium",$id);
         $stadiumEditForm = $this->createForm(new AdminStadiumType(), $stadium, array(
             'method' => 'POST'
