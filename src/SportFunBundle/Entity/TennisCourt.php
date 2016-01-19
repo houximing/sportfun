@@ -3,6 +3,7 @@
 namespace SportFunBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * TennisCourt
@@ -12,6 +13,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class TennisCourt
 {
+
+    const STATUS_VACANT = 0;
+    const STATUS_OCCUPIED = 1;
+    const STATUS_HALF = 2;
+
     /**
      * @var integer
      *
@@ -25,8 +31,10 @@ class TennisCourt
      * @var integer
      *
      * @ORM\Column(name="maxpeople", type="integer")
+     * @Assert\Type(type="integer", message="Must be an integer.")
+     * @Assert\GreaterThan(value="0", message="Must be positive.")
      */
-    private $maxpeople;
+    protected $maxpeople;
 
     /**
      * @var boolean
@@ -38,23 +46,23 @@ class TennisCourt
     /**
      * @var float
      *
-     * @ORM\Column(name="additionalFare", type="float")
+     * @ORM\Column(name="additionalFare", type="float", precision=10, scale=2)
      */
-    private $additionalFare;
+    private $additionalFare = 0;
 
     /**
      * @var array
      *
      * @ORM\Column(name="availability", type="string")
      */
-    private $availability;
+    private $availability = '';
 
     /**
      * @var integer
      *
      * @ORM\Column(name="status", type="smallint")
      */
-    private $status;
+    private $status = self::STATUS_VACANT;
 
     /**
      * var StadiumTennis

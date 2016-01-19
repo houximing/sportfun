@@ -1,0 +1,204 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Stadium management{% endblock %}
+
+{% block body %}
+<h1>Stadium details</h1>
+
+    <div class="panel panel-info">
+            <div class="panel-heading">
+                Details
+            </div>
+            <div class="panel-body">
+                {{ form_start(form) }}
+                {{ form_row(form.name) }}
+                {{ form_row(form.contactPerson) }}
+                {{ form_row(form.contactNumber) }}
+                {{ form_row(form.contactEmail) }}
+                {{ form_row(form.description) }}
+                {{ form_row(form.logo) }}
+                {{ form_row(form.tag) }}
+                {{ form_row(form.address) }}
+                {{ form_row(form.suburb) }}
+                {{ form_row(form.state) }}
+                {{ form_row(form.postcode) }}
+                {{ form_row(form.incinsurance) }}
+                {{ form_row(form.incGST) }}
+                {{ form_row(form.equipRequired) }}
+                <div class="div-hidden" id="equipments">
+                    <h5>Please add/remove your equipments</h5>
+                    <div id="equip-details">
+                        <div class="equip"  data-prototype="{{ form_widget(form.equipments.vars.prototype)|e }}">
+                            {% for equipment in form.equipments %}
+                                <div class="equip-item">
+                                    {{ form_row(equipment.name) }}
+                                    {{ form_row(equipment.price) }}
+                                    {{ form_row(equipment.unit) }}
+                                    {{ form_row(equipment.required) }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {{ form_row(form.submit) }}
+            </div>
+        </div>
+    {% for court in stadium.courts %}
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                Court {{ loop.index }}
+            </div>
+            <div class="panel-body">
+                <div>
+                   <b>
+                        Max people:
+                   </b>
+                   {{ court.maxpeople }}
+                </div>
+                <div>
+                   <b>
+                        Fees for additional people
+                   </b>
+                   ${{ court.additionalFare }} each
+                </div>
+                <div class="button-row">
+                    <a href="{{ path('court-details',{'id':court.id}) }}" class="btn btn-info">Edit</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <div>
+        <a class="btn btn-danger" href="{{ path("court-add",{"id":stadium.id}) }}">Add court</a>
+    </div>
+    <p>
+        <form id="hirepadform">
+            <input type="hidden" name="stadiumid" value="{{ stadium.id }}" />
+            <div class="form-group">
+                <div>
+                    Available for hiring pad?
+                    <input type="checkbox" name="hirepad" id="hirepad" value="1"
+                            {% if stadium.hirepad%} checked="checked" {% endif %}>
+                </div>
+                <label id="price-label">Price for each pad</label>
+                <div class="input-group col-lg-2">
+                  <span class="input-group-addon">$</span>
+                  <input type="text" class="form-control" name="hirePrice" id="hirePrice" value="{{ stadium.hirepadPrice }}">
+                  <div class="input-group-btn">
+                    <button type="button" class="btn btn-success" id="saveHirePrice">Save</button>
+                  </div>
+                </div>
+            </div>
+        </form>
+    </p>
+    <script>
+        $(document).ready(function(){
+            toggleBox();
+            toggleEquip();
+        });
+
+        $("#sportfunbundle_stadiumadmin_equipRequired").change(function(){
+            toggleEquip();
+        });
+
+        $("#hirepad").click(function(){
+            toggleBox();
+            //save hirepad status
+            updatePadHireDetails();
+        });
+
+        $("#saveHirePrice").click(function(){
+            updatePadHireDetails();
+        });
+
+        function toggleEquip(){
+            if($("#sportfunbundle_stadiumadmin_equipRequired").val() == 0){
+                //this is the yes selection -- don't know why, true is 0, false is 1....
+                $("#equipments").show();
+            } else {
+                $("#equipments").hide();
+            }
+        }
+
+        function toggleBox(){
+            if($("#hirepad").prop('checked')){
+                $("#hirePrice").parent().show();
+                $("#price-label").show();
+            } else {
+                $("#hirePrice").parent().hide();
+                $("#price-label").hide();
+            }
+        }
+
+        function updatePadHireDetails(){
+            $.post("/manage/hirepad",$('#hirepadform').serialize());
+        }
+        var $collectionHolder;
+
+        // setup an "add a tag" link
+        var $addTagLink = $('<a href="#" class="add_tag_link btn btn-success">Add a equipment</a>');
+        var $newLinkLi = $('<div></div>').append($addTagLink);
+
+        $(document).ready(function() {
+            // Get the ul that holds the collection of tags
+            $collectionHolder = $('div.equip');
+
+            // add the "add a tag" anchor and li to the tags ul
+            $collectionHolder.append($newLinkLi);
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+            $addTagLink.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // add a new tag form (see next code block)
+                addTagForm($collectionHolder, $newLinkLi);
+            });
+        });
+        function addTagForm($collectionHolder, $newLinkLi) {
+            // Get the data-prototype explained earlier
+            var prototype = $collectionHolder.data('prototype');
+
+            // get the new index
+            var index = $collectionHolder.data('index');
+
+            // Replace '__name__' in the prototype's HTML to
+            // instead be a number based on how many items we have
+            var newForm = prototype.replace(/__name__/g, index);
+
+            // increase the index with one for the next item
+            $collectionHolder.data('index', index + 1);
+
+            // Display the form in the page in an li, before the "Add a tag" link li
+            var $newFormLi = $('<div></div>').append(newForm);
+            $newLinkLi.before($newFormLi);
+            addTagFormDeleteLink($newFormLi);
+        }
+        $(document).ready(function() {
+            // Get the ul that holds the collection of tags
+            $collectionHolder = $('div.equip');
+
+            // add a delete link to all of the existing tag form li elements
+            $collectionHolder.find('div.equip-item').each(function() {
+                addTagFormDeleteLink($(this));
+            });
+
+            // ... the rest of the block from above
+        });
+        function addTagFormDeleteLink($tagFormLi) {
+            var $removeFormA = $('<a href="#" class="btn btn-danger">Delete this equipment</a>');
+            $tagFormLi.append($removeFormA);
+
+            $removeFormA.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // remove the li for the tag form
+                $tagFormLi.remove();
+            });
+        }
+
+    </script>
+{% endblock %}

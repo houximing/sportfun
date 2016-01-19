@@ -1,0 +1,11 @@
+{% for court in entity.courts %}
+    <button class="btn btn-primary" type="button">
+        Court <span class="badge">{{ court.id }}</span>
+    </button>
+{% endfor %}
+<h3>
+    Price: ${{ entity.unitPrice }}/{{ entity.unit }}
+</h3>
+{{ form_start(staForm) }}
+{{ form_widget(staForm) }}
+{{ form_end(staForm) }}

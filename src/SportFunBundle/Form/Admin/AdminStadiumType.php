@@ -1,17 +1,18 @@
 <?php
 
-namespace SportFunBundle\Form;
+namespace SportFunBundle\Form\Admin;
 
 use Doctrine\ORM\EntityRepository;
 use SportFunBundle\Entity\Stadium;
 use SportFunBundle\Entity\StateRepository;
+use SportFunBundle\Form\EquipmentType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints\Choice;
 
-class StadiumType extends AbstractType
+class AdminStadiumType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -21,13 +22,6 @@ class StadiumType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('code')
-            ->add('type','choice',[
-                'choices' => Stadium::getTypeMap()
-            ])
-            ->add('abn','text',[
-                'label' => "ABN"
-            ])
             ->add('contactPerson')
             ->add('contactNumber')
             ->add('contactEmail')
@@ -40,7 +34,6 @@ class StadiumType extends AbstractType
                 'label' => 'Upload logo',
                 'data_class' => null
             ])
-            ->add('code')
             ->add('tag')
             ->add('address')
             ->add('suburb','entity',[
@@ -58,14 +51,6 @@ class StadiumType extends AbstractType
                 }
             ])
             ->add('postcode')
-            ->add('latitude')
-            ->add('longitude')
-            ->add('chain','choice',[
-                "choices" => [
-                    "Yes" => 1,
-                    "No" => 0
-                ],'choices_as_values' => true,
-            ] )
             ->add('incinsurance','choice',[
                 "choices" => [
                     "Yes" => true,
@@ -87,12 +72,15 @@ class StadiumType extends AbstractType
                 ],'choices_as_values' => true,
                 'label' => 'Does your venue require customer to hire the necessary activitity related equipment?'
             ] )
-            ->add('status','choice',[
-                "choices" => [
-                    "Active" => 1,
-                    "Inactive" => 0
-                ],'choices_as_values' => true,
-            ] )
+            ->add('equipments','collection', [
+                'type' => new EquipmentType(),
+                'allow_add' => true,
+                'by_reference' => false,
+                'allow_delete' => true,
+            ])
+            ->add('submit', 'submit', array('label' => 'Save','attr'=>[
+                'class' => 'btn btn-success'
+            ]))
         ;
     }
     
@@ -102,7 +90,8 @@ class StadiumType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'SportFunBundle\Entity\Stadium'
+            'data_class' => 'SportFunBundle\Entity\Stadium',
+            'csrf_protection'   => false
         ));
     }
 
@@ -111,6 +100,6 @@ class StadiumType extends AbstractType
      */
     public function getName()
     {
-        return 'sportfunbundle_stadium';
+        return 'sportfunbundle_stadiumadmin';
     }
 }

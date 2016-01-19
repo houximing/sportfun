@@ -3,7 +3,7 @@
 {% block body -%}
     <h1>{{ entity.name }}</h1>
     <div class="row">
-        <div class="col-lg-3 bottom-right" style="background-color: #5bc0de;">
+        <div class="col-lg-3 bottom-right" style="background-color: #5bc0de;height:1000px;">
             <div style="padding-bottom: 30px;">
                 <h5>Search the stadium by postcode</h5>
                 <form name="search-stadium" id="search-stadium" action="/stadium/list" method="post">
@@ -30,22 +30,48 @@
                 <div class="alert alert-warning" role="alert">Stadium 1</div>
                 <div class="alert alert-warning" role="alert">Stadium 2</div>
                 <div class="alert alert-warning" role="alert">Stadium 3</div>
-                <div>Things to know</div>
-                <div>Pricing</div>
-                <div>Payment</div>
-                <div>Policy</div>
-                <div>Customer Services</div>
+                <div class="side-menu">Things to know</div>
+                <div class="side-menu">Pricing</div>
+                <div class="side-menu">Payment</div>
+                <div class="side-menu">Policy</div>
+                <div class="side-menu">Customer Services</div>
             </div>
         </div>
         <div class="col-lg-9">
             <div class="jumbotron">
                 <img src="{{ asset('uploads/logos/' ~ entity.logo) }}" class="standard-thumbnail img-thumbnail" />
             </div>
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active"><a id="description">Description</a></li>
+                <li role="presentation"><a id="details">Details</a></li>
+            </ul>
+            <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade in active" id="description-tab">
+                    <p>
+                        {{ entity.description }}
+                    </p>
+                </div>
+                <div class="tab-pane fade" id="details-tab">
+                    <p>
+                        {{ entity.address }}
+                    </p>
+                </div>
+            </div>
             <div>
-                {{ form_start(staForm) }}
-                {{ form_widget(staForm) }}
-                {{ form_end(staForm) }}
+                {% if type == constant('SportFunBundle\\Entity\\Stadium::TYPE_TENNIS') %}
+                    {%  include('SportFunBundle:Stadium:tennis.html.twig') %}
+                {% endif %}
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function(){
+            $("ul.nav-tabs li").click(function(){
+                $(this).siblings().removeClass('active');
+                $(this).addClass('active');
+                $("#" + $(this).find('a').attr("id") + "-tab").addClass('in active').removeClass('fade');
+                $("#" + $(this).find('a').attr("id") + "-tab").siblings().removeClass('in active').removeClass('fade');
+            });
+        });
+    </script>
 {% endblock %}
