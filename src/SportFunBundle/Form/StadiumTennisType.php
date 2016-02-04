@@ -32,7 +32,7 @@ class StadiumTennisType extends AbstractType
         ;
         if($stadium->getHirepad()) {
             $builder->add('hirepad', 'choice', [
-                'choices' => range(1,10),
+                'choices' => range(0,10),
                 'label' => "Hire pad (\$ {$stadium->getHirepadPrice()} / each)"
             ])
             ->add('hirePrice','hidden',[

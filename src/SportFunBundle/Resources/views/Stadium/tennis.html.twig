@@ -1,11 +1,47 @@
 {% for court in entity.courts %}
-    <button class="btn btn-primary" type="button">
+    <button class="btn btn-primary court" type="button" id="court-{{ court.id }}">
         Court <span class="badge">{{ court.id }}</span>
     </button>
+    <input type="checkbox" class="court-check" id="court-check-{{ court.id }}" value="{{ court.additionalFare}}">
 {% endfor %}
 <h3>
     Price: ${{ entity.unitPrice }}/{{ entity.unit }}
 </h3>
+<h3>
+    Total: <span id="total-price">$0.00</span>
+</h3>
 {{ form_start(staForm) }}
 {{ form_widget(staForm) }}
 {{ form_end(staForm) }}
+<script>
+    $(".court").click(function(){
+        if($(this).next("input[type=checkbox]").is(":checked") === true){
+            $(this).next("input[type=checkbox]").prop('checked', false);
+        } else {
+            $(this).next("input[type=checkbox]").prop('checked', true);
+        }
+        $("#total-price").html("$"+(calculateHirepadTotal() + calculatePeopleTotal()));
+    });
+
+    $("#sportfunbundle_stadiumtennis_court_addition").change(function(){
+        $("#total-price").html("$"+(calculateHirepadTotal() + calculatePeopleTotal()));
+    });
+
+    $("#sportfunbundle_stadiumtennis_hirepad").change(function(){
+        $("#total-price").html("$"+(calculateHirepadTotal() + calculatePeopleTotal()));
+    });
+
+    function calculatePeopleTotal(){
+        var courtAdditionalPeoplePrice = 0;
+        $.each($('input:checkbox:checked'), function(index, element){
+            courtAdditionalPeoplePrice += $(element).val() * $("#sportfunbundle_stadiumtennis_court_addition").val();
+        });
+        return courtAdditionalPeoplePrice;
+    }
+
+    function calculateHirepadTotal(){
+        return $("#sportfunbundle_stadiumtennis_hirepad").val() * {{ entity.hirepadPrice }} + {{ entity.unitPrice }}
+    };
+</script>
+
+
