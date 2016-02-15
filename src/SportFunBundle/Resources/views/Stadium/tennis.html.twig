@@ -1,8 +1,9 @@
+{{ form_start(staForm) }}
 {% for court in entity.courts %}
     <button class="btn btn-primary court" type="button" id="court-{{ court.id }}">
         Court <span class="badge">{{ court.id }}</span>
     </button>
-    <input type="checkbox" class="court-check" id="court-check-{{ court.id }}" value="{{ court.additionalFare}}">
+    <input type="checkbox" name="court-check-{{ court.id }}" class="court-check" id="court-check-{{ court.id }}" value="{{ court.additionalFare}}">
 {% endfor %}
 <h3>
     Price: ${{ entity.unitPrice }}/{{ entity.unit }}
@@ -10,8 +11,8 @@
 <h3>
     Total: <span id="total-price">$0.00</span>
 </h3>
-{{ form_start(staForm) }}
 {{ form_widget(staForm) }}
+<input type="hidden" value="{{ entity.id }}" name="stadiumId">
 {{ form_end(staForm) }}
 <script>
     $(".court").click(function(){
@@ -20,27 +21,34 @@
         } else {
             $(this).next("input[type=checkbox]").prop('checked', true);
         }
-        $("#total-price").html("$"+(calculateHirepadTotal() + calculatePeopleTotal()));
+        console.log("$"+ parseFloat(calculateHirepadTotal()) + parseFloat(calculatePeopleTotal()));
+        $("#total-price").html("$"+ (parseFloat(calculateHirepadTotal()) + parseFloat(calculatePeopleTotal())));
     });
 
     $("#sportfunbundle_stadiumtennis_court_addition").change(function(){
-        $("#total-price").html("$"+(calculateHirepadTotal() + calculatePeopleTotal()));
+        $("#total-price").html("$"+ (parseFloat(calculateHirepadTotal()) + parseFloat(calculatePeopleTotal())));
+    });
+
+    $("#sportfunbundle_stadiumtennis_court_maxpeople").change(function(){
+        $("#total-price").html("$"+ (parseFloat(calculateHirepadTotal()) + parseFloat(calculatePeopleTotal())));
     });
 
     $("#sportfunbundle_stadiumtennis_hirepad").change(function(){
-        $("#total-price").html("$"+(calculateHirepadTotal() + calculatePeopleTotal()));
+        $("#total-price").html("$"+ (parseFloat(calculateHirepadTotal()) + parseFloat(calculatePeopleTotal())));
     });
 
     function calculatePeopleTotal(){
         var courtAdditionalPeoplePrice = 0;
         $.each($('input:checkbox:checked'), function(index, element){
-            courtAdditionalPeoplePrice += $(element).val() * $("#sportfunbundle_stadiumtennis_court_addition").val();
+            courtAdditionalPeoplePrice += parseFloat($(element).val() * $("#sportfunbundle_stadiumtennis_court_addition").val());
         });
+        var numberOfPeople = parseFloat($("#sportfunbundle_stadiumtennis_court_maxpeople").val()) + parseFloat($("#sportfunbundle_stadiumtennis_court_addition").val());
+        courtAdditionalPeoplePrice += parseFloat(numberOfPeople * {{ entity.unitPrice }});
         return courtAdditionalPeoplePrice;
     }
 
     function calculateHirepadTotal(){
-        return $("#sportfunbundle_stadiumtennis_hirepad").val() * {{ entity.hirepadPrice }} + {{ entity.unitPrice }}
+        return parseFloat($("#sportfunbundle_stadiumtennis_hirepad").val() * {{ entity.hirepadPrice }});
     };
 </script>
 

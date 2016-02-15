@@ -1,7 +1,27 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}SportFunBundle:Order:billingDetails{% endblock %}
+{% block title %}Booking order details{% endblock %}
 
 {% block body %}
-<h1>Welcome to the Order:billingDetails page</h1>
+<h2>Booking order details</h2>
+    <h4>Following is your order details:</h4>
+    <div>
+        Total: ${{ order.total }}
+    </div>
+    <div>
+        Order date and time: {{ order.datetimeCreated|date("d/m/Y H:i:s") }}
+    </div>
+    <div>
+        <h4>
+            Order items:
+        </h4>
+        {% for item in order.bookingOrderItems %}
+            <div>
+                {{ item.name }}: {{ item.quantity }}
+            </div>
+        {% endfor %}
+    </div>
+    <hr>
+    <h2>Payment details</h2>
+    Please enter your credit card details underneath
 {% endblock %}
