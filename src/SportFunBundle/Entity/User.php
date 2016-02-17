@@ -27,11 +27,18 @@ class User extends BaseUser
      */
     protected $stadiums;
 
+    /**
+     * @var Booking[] $bookings
+     * @ORM\OneToMany(targetEntity="Booking", mappedBy="user")
+     */
+    protected $bookings;
+
     public function __construct()
     {
         parent::__construct();
         // your own logic
         $this->stadiums = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
     }
 
     /**
@@ -56,5 +63,30 @@ class User extends BaseUser
     public function addStadium($stadium){
         $this->stadiums->add($stadium);
     }
+
+    /**
+     * @return Booking[]
+     */
+    public function getBookings()
+    {
+        return $this->bookings;
+    }
+
+    /**
+     * @param Booking[] $bookings
+     */
+    public function setBookings($bookings)
+    {
+        $this->bookings = $bookings;
+    }
+
+    /**
+     * @param Booking $booking
+     */
+    public function addBooking($booking){
+        $booking->setUser($this);
+        $this->bookings->add($booking);
+    }
+
 
 }

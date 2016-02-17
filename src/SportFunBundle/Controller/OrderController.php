@@ -4,24 +4,21 @@ namespace SportFunBundle\Controller;
 
 use SportFunBundle\Entity\Booking;
 use SportFunBundle\Entity\BookingOrderItem;
+use SportFunBundle\Entity\CreditCard;
 use SportFunBundle\Entity\Stadium;
 use SportFunBundle\Entity\StadiumTennis;
+use SportFunBundle\Form\AddressType;
+use SportFunBundle\Form\Addressype;
+use SportFunBundle\Form\CreditCardType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
 class OrderController extends Controller
 {
-    /**
-     * @Route("/fill")
-     * @Template()
-     */
-    public function fillAction()
-    {
-        return [];
-    }
 
     /**
      * @Route("/billingDetails", name="billing-details")
@@ -30,10 +27,11 @@ class OrderController extends Controller
     public function billingDetailsAction(Request $request)
     {
         $order = new Booking();
-
+        $user = $this->getUser();
         $data = $request->request;
         $em = $this->getDoctrine()->getManager();
         $stadium = $em->find('SportFunBundle\Entity\Stadium', $data->get('stadiumId'));
+
         if($stadium instanceof StadiumTennis){
             $courtData = $data->get('sportfunbundle_stadiumtennis');
             $numberOfPeople = $courtData['court']['maxpeople'];
@@ -53,6 +51,7 @@ class OrderController extends Controller
             $price = $unitCourtTotalPrice * $additionalPeople + $hiredPadPrice + ($numberOfPeople + $additionalPeople) * $stadium->getUnitPrice();
             $order->setDatetimeCreated(new \DateTime('now', new \DateTimeZone('Australia/Melbourne')));
             $order->setTotal($price);
+            $order->setUser($user);
             $orderItemPeople = new BookingOrderItem();
             $orderItemPeople->setName("Number of People");
             $orderItemPeople->setQuantity($numberOfPeople + $additionalPeople);
@@ -71,22 +70,47 @@ class OrderController extends Controller
             $order->addBookingOrderItem($orderItemPeople);
             $order->addBookingOrderItem($orderItemPad);
             $order->addBookingOrderItem($orderItemCourt);
+            $order->setStatus(Booking::STATUS_AWAITING);
         }
-
+        $em->persist($order);
+        $em->flush();
         //Credit card form section
-
+        $creditCard = new CreditCard();
+        $ccForm = $this->createForm(new CreditCardType(), $creditCard, [
+            'method' => 'POST',
+            'action' => $this->generateUrl('payment')
+        ]);
+        $addressForm = $this->createForm(new AddressType());
         return [
             'order' => $order,
-
+            'user' => $user,
+            'ccForm' => $ccForm->createView(),
+            'addressForm' => $addressForm->createView()
         ];
     }
 
     /**
-     * @Route("/payment")
+     * @Route("/payment", name="payment")
+     * @Method("POST")
      * @Template()
      */
-    public function paymentAction()
+    public function paymentAction(Request $request)
     {
+        //update order status
+        $address = $request->request->get('sportfunbundle_address');
+        $creditcard = $request->request->get('sportfunbundle_creditcard');
+        $em = $this->getDoctrine()->getManager();
+        $state = $em->find('SportFunBundle:State',$address['state']);
+        /** @var Booking $order */
+        $order = $em->find('SportFunBundle:Booking', $request->request->get('order_id'));
+        $order->setStatus(Booking::STATUS_COMPLETE);
+        $order->setAddress($address['address']);
+        $order->setName($address['name']);
+        $order->setSuburb($address['suburb']);
+        $order->setState($state);
+        $order->setPostcode($address['postcode']);
+        $em->persist($order);
+        $em->flush();
         return [];
     }
 

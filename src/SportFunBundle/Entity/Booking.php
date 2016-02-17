@@ -13,6 +13,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Booking
 {
+    const STATUS_AWAITING = 0;
+    const STATUS_COMPLETE = 1;
+    const STATUS_VOID = 2;
+
+
     /**
      * @var integer
      *
@@ -46,36 +51,50 @@ class Booking
     /**
      * @var string
      *
-     * @ORM\Column(name="Name", type="string", length=255)
+     * @ORM\Column(name="Name", type="string", length=255, nullable=true)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Address", type="string", length=255)
+     * @ORM\Column(name="Address", type="string", length=255, nullable=true)
      */
     private $address;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Suburb", type="string", length=255)
+     * @ORM\Column(name="Suburb", type="string", length=255, nullable=true)
      */
     private $suburb;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="State", type="smallint")
+     * @var State
+     * @ORM\ManyToOne(targetEntity="State", inversedBy="bookings")
+     * @ORM\JoinColumn(name="state", referencedColumnName="id")
      */
     private $state;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Postcode", type="string", nullable=true)
+     */
+    private $postcode;
 
     /**
      * @var BookingOrderItem[]
      * @ORM\OneToMany(targetEntity="BookingOrderItem", mappedBy="booking", cascade={"persist"})
      */
     private $bookingOrderItems;
+
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="bookings")
+     * @ORM\JoinColumn(name="user", referencedColumnName="id")
+     */
+    private $user;
 
     public function __construct(){
         $this->bookingOrderItems = new ArrayCollection();
@@ -238,7 +257,7 @@ class Booking
     /**
      * Set state
      *
-     * @param integer $state
+     * @param State $state
      *
      * @return Booking
      */
@@ -252,7 +271,7 @@ class Booking
     /**
      * Get state
      *
-     * @return integer
+     * @return State
      */
     public function getState()
     {
@@ -281,6 +300,38 @@ class Booking
     public function addBookingOrderItem($bookingOrderItem){
         $this->bookingOrderItems->add($bookingOrderItem);
         $bookingOrderItem->setBooking($this);
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPostcode()
+    {
+        return $this->postcode;
+    }
+
+    /**
+     * @param string $postcode
+     */
+    public function setPostcode($postcode)
+    {
+        $this->postcode = $postcode;
     }
 
 

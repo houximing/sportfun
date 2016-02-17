@@ -42,7 +42,7 @@ class BookingOrderItem
      *
      * @ORM\Column(name="unit_cost", type="float")
      */
-    private $unitCost;
+    private $unitCost = 0.00;
 
     /**
      * @var integer
@@ -54,7 +54,7 @@ class BookingOrderItem
     /**
      * @var boolean
      *
-     * @ORM\Column(name="inclusion", type="boolean")
+     * @ORM\Column(name="inclusion", type="boolean", nullable = true)
      */
     private $inclusion;
 
@@ -63,12 +63,12 @@ class BookingOrderItem
      *
      * @ORM\Column(name="included_value", type="float")
      */
-    private $includedValue;
+    private $includedValue = 0.00;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="note", type="string", length=255)
+     * @ORM\Column(name="note", type="string", length=255, nullable = true)
      */
     private $note;
 
