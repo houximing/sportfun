@@ -36,11 +36,8 @@ class TennisCourtType extends AbstractType
             ]);
             if($court->getCanAdd()) {
                 $builder->add('addition', 'choice', [
-                    'choices' => range(1,10),
-                    'label' => "Additional number of people (\$ {$court->getAdditionalFare()} / each)"
-                ])
-                ->add('additionFare','hidden',[
-                    'data' => $court->getAdditionalFare()
+                    'choices' => range(0,10),
+                    'label' => "Additional number of people"
                 ])
                 ;
 

@@ -779,7 +779,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/45d6f40178216a840885b4ca6d7de9e67068568a",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/e770bfa2fd0fc665f55cd7cfeb34bddeffb892f4",
                 "reference": "45d6f40178216a840885b4ca6d7de9e67068568a",
                 "shasum": ""
             },
@@ -1712,6 +1712,111 @@
         }
     ],
     "packages-dev": [
+        {
+            "name": "jms/payment-core-bundle",
+            "version": "1.1.0",
+            "target-dir": "JMS/Payment/CoreBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/schmittjoh/JMSPaymentCoreBundle.git",
+                "reference": "1bde57ad5629c139ee298bc842f982028a6a6383"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/schmittjoh/JMSPaymentCoreBundle/zipball/1bde57ad5629c139ee298bc842f982028a6a6383",
+                "reference": "1bde57ad5629c139ee298bc842f982028a6a6383",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mcrypt": "*",
+                "php": ">=5.3.2",
+                "symfony/framework-bundle": "~2.0"
+            },
+            "require-dev": {
+                "doctrine/doctrine-bundle": "*",
+                "doctrine/orm": "*",
+                "jms/aop-bundle": "*",
+                "jms/di-extra-bundle": "*",
+                "jms/payment-paypal-bundle": "*@dev",
+                "sensio/framework-extra-bundle": "*",
+                "symfony/browser-kit": "*",
+                "symfony/class-loader": "*",
+                "symfony/css-selector": "*",
+                "symfony/finder": "*",
+                "symfony/form": "*",
+                "symfony/process": "*",
+                "symfony/twig-bundle": "*",
+                "symfony/validator": "*",
+                "symfony/yaml": "*"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "JMS\\Payment\\CoreBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache2"
+            ],
+            "authors": [
+                {
+                    "name": "Johannes Schmitt",
+                    "email": "schmittjoh@gmail.com",
+                    "homepage": "https://github.com/schmittjoh",
+                    "role": "Developer of wrapped JMSSerializerBundle"
+                }
+            ],
+            "description": "This bundle is providing the foundation for various payment plugins.",
+            "homepage": "http://jmsyst.com/bundles/JMSPaymentCoreBundle",
+            "keywords": [
+                "payment"
+            ],
+            "time": "2014-01-21 07:45:46"
+        },
+        {
+            "name": "paymill/paymill",
+            "version": "v3.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paymill/paymill-php.git",
+                "reference": "11e63481cd5d28691ed41ac530e7b9fcfe27d5ae"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paymill/paymill-php/zipball/11e63481cd5d28691ed41ac530e7b9fcfe27d5ae",
+                "reference": "11e63481cd5d28691ed41ac530e7b9fcfe27d5ae",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Paymill": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Paymill GmbH",
+                    "homepage": "https://www.paymill.de"
+                }
+            ],
+            "description": "Paymill PHPLib",
+            "homepage": "https://www.paymill.de",
+            "keywords": [
+                "payment",
+                "provider"
+            ],
+            "time": "2014-08-12 13:14:30"
+        },
         {
             "name": "sensio/generator-bundle",
             "version": "v2.5.3",

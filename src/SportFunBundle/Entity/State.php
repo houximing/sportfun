@@ -35,9 +35,16 @@ class State
      */
     private $stadiums;
 
+    /**
+     * @var Bookings[]
+     * @ORM\OneToMany(targetEntity="Booking", mappedBy="state")
+     */
+    private $bookings;
+
 
     public function __construct(){
         $this->stadiums = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
     }
 
     /**
@@ -108,7 +115,32 @@ class State
         $this->stadiums->removeElement($stadium);
     }
 
+    /**
+     * @return Bookings[]
+     */
+    public function getBookings()
+    {
+        return $this->bookings;
+    }
+
+    /**
+     * @param Bookings[] $bookings
+     */
+    public function setBookings($bookings)
+    {
+        $this->bookings = $bookings;
+    }
+
+    /**
+     * @param Booking $booking
+     */
+    public function addBooking($booking){
+        $this->bookings->add($booking);
+        $booking->setState($this);
+    }
+
     public function __toString(){
         return $this->getName();
     }
+
 }

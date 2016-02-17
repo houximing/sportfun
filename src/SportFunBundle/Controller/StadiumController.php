@@ -70,7 +70,7 @@ class StadiumController extends Controller
         $stadium = $em->find('SportFunBundle:Stadium',$id);
         if($stadium instanceof StadiumTennis) {
             $stadiumTennisForm = $this->createForm(new StadiumTennisType($em), $stadium, array(
-                'action' => $this->generateUrl('stadium_create'),
+                'action' => $this->generateUrl('billing-details'),
                 'method' => 'POST',
                 'data' => [
                     'stadium' => $stadium

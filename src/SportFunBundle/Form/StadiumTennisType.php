@@ -3,6 +3,7 @@
 namespace SportFunBundle\Form;
 
 use Doctrine\ORM\EntityRepository;
+use SportFunBundle\Entity\Stadium;
 use SportFunBundle\Entity\StadiumTennis;
 use SportFunBundle\Entity\StateRepository;
 use Symfony\Component\Form\AbstractType;
@@ -29,10 +30,11 @@ class StadiumTennisType extends AbstractType
         $courts = $stadium->getCourts();
         $builder
             ->add('court', new TennisCourtType($courts->first()->getId(), $this->em), ['label' => false])
+           ;
         ;
         if($stadium->getHirepad()) {
             $builder->add('hirepad', 'choice', [
-                'choices' => range(1,10),
+                'choices' => range(0,10),
                 'label' => "Hire pad (\$ {$stadium->getHirepadPrice()} / each)"
             ])
             ->add('hirePrice','hidden',[
