@@ -1,0 +1,42 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Booking list</h1>
+
+    <table class="records_list table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>Datetimecreated</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Suburb</th>
+                <th>Postcode</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr class="{{ entity.getStatusRowClass }}">
+                <td>{% if entity.datetimeCreated %}{{ entity.datetimeCreated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.statusText }}</td>
+                <td>{{ entity.total }}</td>
+                <td>{{ entity.name }}</td>
+                <td>{{ entity.address }}</td>
+                <td>{{ entity.suburb }}</td>
+                <td>{{ entity.postcode }}</td>
+                <td>
+                    <a href="{{ path('booking_show', { 'id': entity.id }) }}" class="btn btn-info">show</a>
+                    <a href="{{ path('booking_edit', { 'id': entity.id }) }}" class="btn btn-warning">edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('booking_new') }}" class="btn btn-success">
+        Create a new order
+    </a>
+
+    {% endblock %}

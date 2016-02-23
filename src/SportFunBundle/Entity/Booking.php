@@ -334,6 +334,29 @@ class Booking
         $this->postcode = $postcode;
     }
 
+    /**
+     * @return array
+     */
+    public function getStatusText(){
+        $statusText = [
+            self::STATUS_COMPLETE => 'Complete',
+            self::STATUS_AWAITING => 'Awaiting',
+            self::STATUS_VOID => 'Void',
+        ];
+        return $statusText[$this->getStatus()];
+    }
+
+    /**
+     * @return array
+     */
+    public function getStatusRowClass(){
+        $statusRowClass = [
+            self::STATUS_COMPLETE => 'success',
+            self::STATUS_AWAITING => 'warning',
+            self::STATUS_VOID => 'danger',
+        ];
+        return $statusRowClass[$this->getStatus()];
+    }
 
 }
 
