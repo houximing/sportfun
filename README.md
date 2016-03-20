@@ -5,6 +5,7 @@ Sport activity finder web application built on Symfony 2.7
 It is developed for providing services to book stadium and sport court in Melbourne, Australia.
 
 == 开发者配置 ==
+========
 当然，如果你喜欢其它的环境，你可以自由配置，但是以下配置，你可以一试。
 目前，Vagrant运行Symfony速度慢的问题还未解决，亟待解决中。。。
 
@@ -63,8 +64,7 @@ export APACHE_RUN_GROUP=vagrant
 请参考： 
 http://stackoverflow.com/questions/22909098/unable-to-create-the-cache-directory-vagrant-app-cache-dev
 
-20. 
-在虚拟机运行
+20. 在虚拟机运行
 mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '' WITH GRANT OPTION; FLUSH PRIVILEGES;"
 然后你就可以用第三方的数据库软件去连接了。如果你用的vagrantfile配置是Git仓库里面的，你会看到主机端口33306映射到虚拟机的3306端口，所以如果在主机用数据库连接软件的话，端口选择33306。
 
