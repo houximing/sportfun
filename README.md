@@ -48,7 +48,7 @@ sudo php5enmod mcrypt
 sudo service apache2 restart
 ```
 17. 创建数据库sportfun
-18. 进入/var/www/sportfun，运行
+18. 进入/var/www/sportfun，运行 sudo composer install, 完成后，运行以下
 ```
 php app/console doctrine:schema:update --force
 ```
