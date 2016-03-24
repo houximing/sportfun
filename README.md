@@ -18,6 +18,7 @@ It is developed for providing services to book stadium and sport court in Melbou
 6. 运行以下命令
 ```
 vagrant up
+vagrant ssh 进入虚拟机
 然后复制以下所有命令：
 sudo apt-get update;
 sudo apt-get install lamp-server^；
