@@ -27,12 +27,17 @@ sudo apt-get update;sudo apt-get install lamp-server^;cd /var/www;sudo ln -s /va
 7. 改变文件夹访问权限
 ```
 主机
+先把app文件夹chmod -R 777 app
 export APACHE_RUN_USER={YOUR_HOST_SERVER_NAME}
 export APACHE_RUN_GROUP={YOUR_HOST_SERVER_NAME}
 在vagrant虚拟机
+sudo vi /etc/apache2/envvars
+找到这两行，把www-data换成如下
 export APACHE_RUN_USER=vagrant
 export APACHE_RUN_GROUP=vagrant
+然后主机vagrant reload
 ```
+
 请参考： 
 http://stackoverflow.com/questions/22909098/unable-to-create-the-cache-directory-vagrant-app-cache-dev
 如果你觉得以上太麻烦，那就自己用自己喜欢的方法，如果喜欢直接用Mac了，那就用Mac，以上的步骤是Windows/Mac 通用的。
