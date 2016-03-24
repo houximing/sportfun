@@ -18,7 +18,27 @@ It is developed for providing services to book stadium and sport court in Melbou
 6. 运行以下命令
 ```
 vagrant up
+然后复制以下所有命令：
+sudo apt-get update;
+sudo apt-get install lamp-server^；
+cd /var/www；
+sudo ln -s /vagrant sportfun；
+sudo cp /vagrant/sportfun.conf /etc/apache2/site-available/；
+sudo a2ensite sportfun.conf；
+sudo a2enmod rewrite；
+sudo apt-get install mcrypt php5-mcrypt；
+sudo php5enmod mcrypt；
+sudo service apache2 restart；
+mysql -u root -e “CREATE DATABASE sportfun;”；
+cd /var/www/sportfun；
+curl -sS https://getcomposer.org/installer | php；
+sudo mv composer.phar /usr/local/bin/composer；
+sudo composer install；
+php app/console doctrine:schema:update --force；
+mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '' WITH GRANT OPTION; FLUSH PRIVILEGES;"
 ```
+
+
 7. 改变文件夹访问权限
 ```
 主机
