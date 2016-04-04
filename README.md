@@ -26,12 +26,16 @@ sudo apt-get update;sudo apt-get install lamp-server^;cd /var/www;sudo ln -s /va
 进入虚拟机
 然后cd /etc/mysql/; vi my.cnf
 找到
+```
 # Instead of skip-networking the default is now to listen only on
 # localhost which is more compatible and is not less secure.
 bind-address            = 0.0.0.0
+```
 改成0.0.0.0
 重启mysql
+```
 sudo service mysql restart
+```
 
 7. 改变文件夹访问权限
 ```
