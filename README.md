@@ -22,7 +22,16 @@ vagrant ssh 进入虚拟机
 然后复制以下所有命令：
 sudo apt-get update;sudo apt-get install lamp-server^;cd /var/www;sudo ln -s /vagrant sportfun;sudo apt-get install mcrypt php5-mcrypt;sudo php5enmod mcrypt;sudo service apache2 restart;mysql -u root -e "CREATE DATABASE sportfun;";cd /var/www/sportfun;curl -sS https://getcomposer.org/installer | php;sudo mv composer.phar /usr/local/bin/composer;sudo composer install;php app/console doctrine:schema:update --force;mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '' WITH GRANT OPTION; FLUSH PRIVILEGES;";sudo cp /vagrant/sportfun.conf /etc/apache2/site-available/sportfun.conf;sudo a2ensite sportfun.conf；sudo a2enmod rewrite;
 ```
-
+改变MySQL外部读写权限：
+进入虚拟机
+然后cd /etc/mysql/; vi my.cnf
+找到
+# Instead of skip-networking the default is now to listen only on
+# localhost which is more compatible and is not less secure.
+bind-address            = 0.0.0.0
+改成0.0.0.0
+重启mysql
+sudo service mysql restart
 
 7. 改变文件夹访问权限
 ```
